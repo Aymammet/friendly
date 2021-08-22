@@ -1,0 +1,358 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_tags %}
+{% block extra_header %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"/>
+    <title>Home Page</title>
+    <link rel="stylesheet"  href=" {% static 'css/home_style.css' %}" type="text/css" />
+{% endblock %}
+
+{% block content %}
+<header>
+</header>
+<main>
+    <div class="container">
+        <div  class="col mx-auto" id="main-column">
+            {% for post in posts %}
+                <div class="col-12 each-column">
+                    <div class="row profile-row"> <!-- Profile Row -->
+                        <div class="col-2">
+                            <a aria-label="Profiles" href="{% url 'profiles:profile' post.owner_of_post.pk %}">
+                                <img src="{{post.owner_of_post.get_profile_image}}" class="avatar avatar-xs-64 avatar-sm-64 avatar-md-64 avatar-lg-64 avatar-xl-64 avatar-xxl-128 bg-light rounded-circle text-white" alt="Circular Image">
+                            </a>
+                        </div>
+
+                        <div class="col-8 p-0 ">
+                            <div class="col" >
+                                {% if post.owner_of_post.name %}
+                                    <b>{{post.owner_of_post.name}} </b>
+                                {% else %}
+                                    <b></b>
+                                {% endif %}
+                                {% if post.owner_of_post.surname %}
+                                    <b>{{post.owner_of_post.surname}} </b>
+                                {% else %}
+                                    <b></b>
+                                {% endif %}
+                                <span class="owner-username">@{{post.owner_of_post}} </span>
+                            </div>
+                            <div class="col post-created-date"> {{post.created_date}}</div>
+                        </div>
+
+                        <div class="col-2 edit-button">
+                            {% if post.owner_of_post == user %}
+                            <a  aria-label="Edit Post" href="{% url 'post:edit_post' post.pk %}"  class="col-2 edit-post" >
+                                <i class="fas fa-pen"></i>
+                            </a>
+                            {% endif %}
+                        </div>
+
+
+                    </div> <!--End of Profile Row -->
+
+                    <div class="row"> <!-- Description Row -->
+                        <div class="col-12">
+                            <p>{{post.description}}</p>
+                        </div>
+                    </div> <!-- End of Description Row -->
+
+                    <div class="row"> <!-- Image Row -->
+                        <div class="col-12">
+                            {% if post.image %}
+                                <div class="post-image">
+                                    <img class="post-image-url" width="100%"  src="{{post.image.url}}" alt="Card image cap">
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>  <!-- End of Image Row -->
+
+                    <div class="row user-likes-dislikes-comments"> <!-- Like-Dislike Row -->
+                        <div class="col-4 like-dislike-comment">
+                            {% if user in post.likes.all %}
+                                <i  id="{{post.id}}" class="fas fa-thumbs-up rate black "></i>
+                            {% else %}
+                                <i  id="{{post.id}}" class="far fa-thumbs-up rate white" ></i>
+                            {% endif %}    
+                            <div class="like_count" id="{{post.id}}">
+                                {{post.likes.all.count}} 
+                            </div>
+                        </div>
+
+                        <div class="col-4 like-dislike-comment">
+                            {% if user in post.dislikes.all %}
+                                <i id="{{post.id}}" class="fas fa-thumbs-down info rate_dislike black_two info" ></i>
+                            {% else %}
+                                <i id="{{post.id}}" class="far fa-thumbs-down rate_dislike white_two" ></i>
+                            {% endif %}
+                            <div class="dislike_count" id="{{post.id}}" > {{post.dislikes.all.count}} </div>
+                        </div>
+
+                        <div class="col-4 like-dislike-comment">
+                            <div >
+                                <input type="hidden" name="next" value="{{request.path}}">
+                                <i id="{{post.id}}" class="far fa-comments  textarea" ></i>
+                                <div class="number_of_coms" id="{{post.id}}"   > {{post.comments_set.count}} </div>
+                            </div>
+                        </div>
+
+                    </div>  <!-- End of Like Dislike Row -->
+
+                    <div class="row"> <!-- Comment Input Row -->
+                        <div class="col comment-input"">
+                            <input class="input-send-comment comment_text"   id="{{post.id}}"    name="comment" placeholder="Enter your comment here..." ></input>
+                        </div>
+
+                        <div class="send">
+                            <div>
+                                <button id="{{post.id}}"  type="submit" class="btn btn-outline-primary send-button">Send</button>
+                            </div>
+                        </div>
+                    </div>  <!-- End of Comment input Row -->
+
+                    <div id="{{post.id}}""  class="row comments {{post.id}}  user_comments" style="display: none;"> <!-- Coments Row-->
+                        {% for comment in post.comments_set.all %}
+                        <!-- <div class="row"> -->
+                            
+                                <div class="col-1 comment-avatar"  >
+                                    <img class="avatar  avatar-32 avatar-md-32 avatar-lg-32 avatar-xl-32 bg-light rounded-circle text-white" src="{{comment.owner_of_comments.get_profile_image}}">
+                                </div>
+                                <div class="col-11 comment-owner" >
+                                    <div class="col-12"  >
+                                        <b> {{ comment.owner_of_comments }}  </b> <span class="comment-date">{{ comment.created_date }}</span>
+                                    </div>
+                                    <div class="col-12" >
+                                        {{ comment.comment }}
+                                    </div>
+                                </div>
+                                <br>
+                            
+                            
+                        <!-- </div> -->
+                    {% empty %}
+                        <p class="no-comment" > <i id="{{post.id}}" class="no_comments_yet"> -- No Comments yet  --  </i> </p>
+                    {% endfor %}
+                    </div> <!--End of Comments Row-->
+                </div>
+            {% endfor %}
+        </div>
+    </div>    
+</main>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // 1
+            // var comments = document.getElementById('user-comments');
+            // var b = document.querySelector('.user-comment-elements');
+            var c = document.getElementsByClassName('far fa-comments');
+            for (i = 0; i < c.length; i++) {
+                c[i].addEventListener('click', function() {
+                    user_comments = document.getElementsByClassName(this.id)
+                    if (user_comments[0].style.display == 'none'){
+                       user_comments[0].style.display = 'flex';
+                    }
+                    else if(user_comments[0].style.display == 'flex') {
+                        user_comments[0].style.display = 'none';
+                    }
+                })
+            }
+
+            // 2
+            
+            like_button = document.getElementsByClassName('rate');
+            for (var i = 0; i < like_button.length; i++) {
+                like_button[i].addEventListener('click', function(event){
+                    var post_id = event.target.id
+                    let xhr = new XMLHttpRequest();
+                    xhr.open('POST', "{% url 'post:post_like' %}");
+                    xhr.setRequestHeader('X-CSRFToken', '{{csrf_token}}');
+                    xhr.setRequestHeader('Content-Type', 'application/json');
+                    xhr.send(JSON.stringify({post_pk:event.target.id }));
+                    xhr.onreadystatechange = () => {
+                        if (xhr.readyState != 4) return;
+                        if (xhr.status == 200) {
+                            const data = JSON.parse(xhr.responseText)
+                            var liked_divs = document.getElementsByClassName('like_count')
+                            var disliked_divs = document.getElementsByClassName('dislike_count')
+                            for (var j = 0; j < liked_divs.length; j++) {
+                                if (liked_divs[j].id == data['post_id'] ){
+                                    liked_divs[j].textContent = data['likes'];
+                                    disliked_divs[j].textContent = data['dislikes'];
+                                    if (data['state'] == 'yes-like') {
+                                        thumbs_up = document.getElementsByClassName('white')
+                                        thumbs_down = document.getElementsByClassName('black_two')
+                                        for (p = 0; p < thumbs_up.length; p++) {
+                                            if (thumbs_up[p].id == post_id) {  
+                                                thumbs_up[p].className = "fas fa-thumbs-up fa-2x rate black" 
+                                            }
+                                        }
+                                        for (p = 0; p < thumbs_down.length; p++) {
+                                            if (thumbs_down[p].id == post_id) {  
+                                                thumbs_down[p].className = "far fa-thumbs-down fa-2x rate white_two" 
+                                            }
+                                        }
+                                    }
+                                    if (data['state'] == 'no-like') {
+                                        thumbs_up = document.getElementsByClassName('black')
+                                        for (p = 0; p < thumbs_up.length; p++) {
+                                            if (thumbs_up[p].id == post_id) {
+                                                thumbs_up[p].className = "far fa-thumbs-up fa-2x rate white"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        if (xhr.status == 403) {
+                            document.location.href = "{% url 'authenticate:main_page' %}?next={{ request.get_full_path|urlencode }}"
+                        }
+                    } 
+                })
+            }
+
+            // 3
+
+            dislike_button = document.getElementsByClassName('rate_dislike');
+            for (var i = 0; i < dislike_button.length; i++) {
+                dislike_button[i].addEventListener('click', function(event){
+                    var dislike_post_id = event.target.id
+                    let xhr = new XMLHttpRequest();
+                    xhr.open('POST', "{% url 'post:post_dislike' %}");
+                    xhr.setRequestHeader('X-CSRFToken', '{{csrf_token}}');
+                    xhr.setRequestHeader('Content-Type', 'application/json');
+                    xhr.send(JSON.stringify({disliked_post_pk:event.target.id }));
+                    xhr.onreadystatechange = () => {
+                        if (xhr.readyState != 4) return;
+                        if (xhr.status == 200) {
+                            const taken_data = JSON.parse(xhr.responseText)
+                            var disliked_divs = document.getElementsByClassName('dislike_count')
+                            var liked_divs = document.getElementsByClassName('like_count')
+                            for (var j = 0; j < disliked_divs.length; j++) {
+                                if (disliked_divs[j].id == taken_data['dislike_post_id'] ){
+                                    disliked_divs[j].textContent = taken_data['dislikes'];
+                                    liked_divs[j].textContent = taken_data['likes']
+                                    if (taken_data['state'] == 'yes-dislike') {
+                                        thumbs_down = document.getElementsByClassName('white_two')
+                                        thumbs_up = document.getElementsByClassName('black')
+                                        for (p = 0; p < thumbs_down.length; p++) {
+                                            if (thumbs_down[p].id == dislike_post_id) {  
+                                                thumbs_down[p].className = "fas fa-thumbs-down fa-2x rate black_two"
+                                            }
+                                        }
+                                        for (p = 0; p < thumbs_up.length; p++) {
+                                            if (thumbs_up[p].id == dislike_post_id) {  
+                                                thumbs_up[p].className = "far fa-thumbs-up fa-2x rate white"
+                                            }
+                                        }
+                                    }
+                                    if (taken_data['state'] == 'no-dislike') {
+                                        thumbs_down = document.getElementsByClassName('black_two')
+                                        for (p = 0; p < thumbs_down.length; p++) {
+                                            if (thumbs_down[p].id == dislike_post_id) {
+                                                thumbs_down[p].className = "far fa-thumbs-down fa-2x rate white_two"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        if (xhr.status == 403) {
+                            document.location.href = "{% url 'authenticate:main_page' %}?next={{ request.get_full_path|urlencode }}"
+                        }
+                    } 
+                })
+            }
+
+            // 4
+
+            send_button = document.getElementsByClassName('send-button');
+            comment_text = document.getElementsByClassName('comment_text');
+            for (var i = 0; i < send_button.length; i++) {
+                send_button[i].addEventListener('click', function(event){
+                    post_id = event.target.id
+                    for (i = 0; i < comment_text.length; i++) {
+                        if (comment_text[i].id == post_id ) {
+                            sent_comment_text = comment_text[i].value; 
+                            comment_text[i].value = ''
+                        }
+                    }
+                    let xhr = new XMLHttpRequest();
+                    xhr.open('POST', "{% url 'post:comment' %}");
+                    xhr.setRequestHeader('X-CSRFToken', '{{csrf_token}}');
+                    xhr.setRequestHeader('Content-Type', 'application/json');
+                    xhr.send(JSON.stringify({post_pk:post_id, comment:sent_comment_text}));
+                    xhr.onreadystatechange = () => {
+                        if (xhr.readyState != 4) return;
+                        if (xhr.status == 200) {
+                            const received = JSON.parse(xhr.responseText)
+                            no_of_comments = received['number_of_comments']
+                            new_comment = received['new_comment']
+                            comm_date = received['comm_date']
+                            all_comments = received['all_comments']
+                            users = received['all_users']
+                            const user_comments_new = document.getElementsByClassName('user_comments');
+                            for (q = 0; q < user_comments_new.length; q++){
+                                if (user_comments_new[q].id == post_id ){
+                                    while (user_comments_new[q].lastElementChild) {
+                                        user_comments_new[q].removeChild(user_comments_new[q].lastElementChild);
+                                    }
+                                }
+                            }
+                            coms = document.getElementsByClassName('number_of_coms')
+                            for (i = 0; i < coms.length; i++) {
+                                if(coms[i].id == post_id) {
+                                   coms[i].textContent = no_of_comments
+                                }
+                            }
+                            for (i = 0; i < all_comments.length; i++) {
+                                if (all_comments[i].comment) {
+                                div1 = document.createElement('div')
+                                div1.classList.add('col-1')
+                                div1.classList.add('comment-avatar')
+                                img1 = document.createElement('img')
+                                img1.classList.add('avatar')
+                                img1.classList.add('avatar-32')
+                                img1.classList.add('avatar-md-32')
+                                img1.classList.add('avatar-lg-32')
+                                img1.classList.add('avatar-xl-32')
+                                img1.classList.add('bg-light')
+                                img1.classList.add('rounded-circle')
+                                img1.classList.add('text-white')
+                                img1.src = all_comments[i].owner_of_comment_image
+                                div1.appendChild(img1)
+                                div2 = document.createElement('div')
+                                div2.classList.add('col-11')
+                                div2.classList.add('comment-owner')
+                                div3 = document.createElement('div')
+                                div2.appendChild(div3)
+                                div3.classList.add('col-12')
+                                b1 = document.createElement('b')
+                                b1.innerHTML = all_comments[i].owner_of_comment
+                                div3.appendChild(b1)
+                                span1 = document.createElement('span')
+                                span1.innerHTML = all_comments[i].created_date
+                                span1.classList.add('comment-date')
+                                div3.appendChild(span1)
+                                div4 =document.createElement('div')
+                                div4.classList.add('col-12')
+                                div4.innerHTML = all_comments[i].comment
+                                div2.appendChild(div4)
+
+                                for (j = 0 ; j < user_comments_new.length; j ++) {
+                                    if (user_comments_new[j].id == post_id) {
+                                        user_comments_new[j].appendChild(div1);
+                                        user_comments_new[j].appendChild(div2);
+                                    }
+                                }
+                            }    
+                        }
+                    }
+                        if (xhr.status == 403) {
+                            document.location.href = "{% url 'authenticate:main_page' %}?next={{ request.get_full_path|urlencode }}"
+                        }
+                    }
+                })
+            }
+        })
+    </script>
+{% endblock %}
+ 

@@ -1,0 +1,67 @@
+{% extends 'facebook/base.html' %}
+{% load static %}
+{% block content %}
+
+<head>
+    <title>DM with -- John Snow</title>
+    <meta charset="UTF-8" />
+  
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="{% static 'css/direct_message_style.css' %}" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"
+    />
+</head>
+    <body>
+        <div id="main">
+            <div id="main-left">
+                <div id="photo">
+                    Photox
+                </div>
+            </div>
+    
+            <div id="main-center">
+                <div class="conversation">
+                    <div class="user1">
+                        <div class="center-profile-photo">
+                            <img class="center-avatar" src="../../static/images/fr9.jpeg" />
+                          </div>
+                        <div class="user1-text">
+                            <p class="user1-text-value" >Hello John</p>
+                        </div>
+                    </div>
+
+                    <div class="user1">
+                        <div class="center-profile-photo">
+                            <img class="center-avatar" src="../../static/images/fr9.jpeg" />
+                          </div>
+                        <div class="user1-text">
+                            <p class="user1-text-value" >How r u</p>
+                        </div>
+                    </div>
+
+                    <div class="user2">
+                        <div class="user2-text">
+                            <p class="user2-text-value" >How r u</p>
+                        </div>
+                        
+                        <div class="center-profile-photo">
+                            <img class="center-avatar" src="../../static/images/fr9.jpeg" />
+                          </div>
+                        
+                    </div>
+
+                </div>
+            </div>
+    
+           
+        </div >
+    </body>
+
+{% endblock %}

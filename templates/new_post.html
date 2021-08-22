@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_tags %}
+{% block extra_header %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"/>
+    <title>New Post</title>
+    <link rel="stylesheet"  href=" {% static 'css/new_post_style.css' %}" type="text/css" />
+{% endblock %}
+
+{% block content %}
+<header>
+</header>
+<main>
+  <div class="container">
+    <div  class="col mx-auto" id="main-column">
+      <div class="col-12 each-column">
+        <form method="POST" enctype="multipart/form-data" class="form-input">
+          {% csrf_token %} 
+          <div class="row">
+            <div class="col-4">
+              <label for="id_description">Post Description</label>
+            </div>
+            <div class="col-8">
+              <input id="post-input" placeholder="Add description for your post"   name="description">
+            </div>
+
+          </div>
+
+          <div class="row">
+            <div class="col-4">
+              <label for="id_image">Post Image</label>
+            </div>
+            <div class="col-8">
+              <input type="file" id="id_image" name="image">
+            </div>
+
+            
+          </div>
+
+          <div class="row">
+            <img id="image_loaded" width="100%" height="100%" >
+          </div>
+
+          <div class="row">
+            <div class="col-12 create-button">
+              <button id="CreateButton" type="submit" class="btn btn-primary" >Create Post</button>
+            </div>
+          </div>
+
+          <div class="row error" >
+            {% if messages %}
+                {% for messages in messages %}
+                  <h4 >{{ messages }}</h4>
+                {% endfor %}
+              {% endif %}
+          </div>
+      </form>
+      </div>
+    </div>
+  </div>
+</main>
+
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+
+     document.getElementById('id_image').addEventListener('change', (event) => {
+        surat = document.getElementById('id_image')
+        var src = URL.createObjectURL(event.target.files[0])
+        document.getElementById('image_loaded').src = src;
+      })  
+      
+      // document.getElementById('id_description').addEventListener('change', (event) => {
+      //   console.log(id_description.value)
+      //   console.log( document.getElementById('image_loaded').src)
+      // if (id_description.value != ' ' || document.getElementById('image_loaded').src != ' ') {
+      //     button = document.getElementById('CreateButton');
+      //     button.style.display = 'block';
+      //   }
+      //   else {
+      //     button.style.display = 'none';
+      //   }
+      // })  
+
+
+  });
+</script>
+
+{% endblock %}

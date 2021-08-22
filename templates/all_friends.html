@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block extra_header %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"/>
+    <title>My Friends</title>
+    <link rel="stylesheet"  href=" {% static 'css/all_friends_style.css' %}" type="text/css" />
+{% endblock %}
+
+{% block content %}
+<header>
+</header>
+<main>
+  <div class="container">
+    <div  class="col mx-auto" style="background-color: white;" id="main-column">
+      
+        {% for friend in user.friends.all %}
+        <div class="col-12 each-column">
+          <a href="{% url 'profiles:profile' friend.pk %}" class="col-8 friends-link"  >
+            <div style="width: 90px;" class="col-2 p-0">
+              <img class="avatar  avatar-md-32 bg-light rounded-circle text-white" src="{{friend.get_profile_image}}">
+            </div>
+            <div class="col-6 p-0">
+              {{friend.username}}
+            </div>
+          </a>
+          <div class="col-4 p-0" style="display: flex; justify-content: space-between;">
+            <div class="col">
+              <a class="friends-add" href="{% url 'profiles:inbox'  %}" style="text-decoration: none;">
+                <i class="fas fa-envelope fa-1x" style=" font-size: 18px; color: #1266F1;"  ></i>
+              </a> 
+            </div>
+            <div class="col">
+              <form method="POST" action="{% url 'notifications:remove_friend' friend.pk %}">
+                {% csrf_token %}
+                <button type="submit" style="border: none; background: none;" >
+                  <i class="fas fa-user-times" style=" font-size: 18px; color: #1266F1;"></i>
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      {% endfor %} 
+      
+
+    </div>
+  </div>
+</main>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+     <!-- <div class="friends">
+              <div class="friends-pp"> 
+                  <img src="{{friend.get_profile_image}}" style="width: 100%; height: 100%; border-radius: 50%;">
+              </div>
+              <a class="friends-name" href="{% url 'profiles:profile' friend.pk %}" style="text-decoration: none; color: black;">
+                 {{friend.username}}
+              </a>
+              <a class="friends-add" href="{% url 'profiles:create_thread'  %}" style="text-decoration: none;">
+                  <i class="fas fa-envelope fa-1x" style="color: white;"></i>
+                </a>   
+                
+                <a class="friends-remove" style="text-decoration: none;">
+                  <form method="POST" action="{% url 'notifications:remove_friend' friend.pk %}">
+                    {% csrf_token %}
+                    <button type="submit" style="background-color: rgba(0,0,0,0);">
+                      <i class="fas fa-user-times" style="color: white;"></i>
+                    </button>
+                  </form>
+                </a> 
+            </div> -->

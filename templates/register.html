@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_tags %}
+{% block extra_header %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"/>
+    <title>Register Page</title>
+    <link rel="stylesheet"  href=" {% static 'css/register_style.css' %}" type="text/css" />
+{% endblock %}
+
+{% block content %}
+<header>
+</header>
+<main>
+    <div class="container">
+        <div  class="col mx-auto" id="main-column">
+          <div class="col-12 each-column">
+            <div id="main-col">
+        
+              <div class="main" id="main-center">
+                
+                <div class="main_div">
+                  <div class="title">Register</div>
+             
+                  <form action="#" method="POST">
+                    {% csrf_token %}
+                    <!-- <div class="input_box">
+                          <input type="text" name="name" placeholder="Name" required />
+                          <div class="icon"><i class="fas fa-user"></i></div>
+                    </div>
+              
+                    <div class="input_box" >
+                            <input type="text" name="surname" placeholder="Surname" value="{{ form.username.value|default_if_none:"" }}">
+                            <div class="icon"><i class="far fa-user"></i></div>
+                    </div> -->
+                    
+      
+                    <div class="input_box">
+                      <input type="text" name="username" placeholder="Username" required />
+                      <div class="icon"><i class="fas fa-at"></i></div>
+              </div>
+      
+                    <div class="input_box" >
+                      <input type="text" name="email"  placeholder="E-mail" >
+                      <div class="icon"><i class="fas fa-envelope"></i></div>
+                    </div>
+      
+            
+      
+                    <div class="input_box">
+                      <input type="password" name="password1" placeholder="Password" required />
+                      <div class="icon"><i class="fas fa-key"></i></div>
+              </div>
+              
+              <div class="input_box">
+                      <input type="password" name="password2" placeholder="Confirm password" required />
+                      <div class="icon"><i class="fas fa-lock"></i></div>
+              </div>
+              
+                    <div class="input_box button">
+                      <input id="submit" type="submit" value="Sign Up" >
+                    </div>
+                    <div class="sign_up">Go to <a href="{% url 'authenticate:main_page' %}"> Login page</a></div>
+                    <div>
+                      {{form.errors}}
+                    </div>
+                  </form>
+                
+                </div>
+                
+              
+              </div>
+              
+          </div>
+          </div>
+        </div>
+    </div>
+</main>
+
+
+   
+
+        
+        
+               
+
+
+  </body>
+  
+  
+  {% endblock %}

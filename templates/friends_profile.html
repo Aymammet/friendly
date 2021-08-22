@@ -1,0 +1,316 @@
+{% extends 'facebook/base.html' %}
+{% load static %}
+{% block content %}
+
+   
+<head>
+    <title>John Snow</title>
+    <meta charset="UTF-8" />
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/friends_profile_style.css' %}">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"
+    />
+  </head>
+<body>
+  <div id="main">
+    <div id="main-left">
+      <h1 class="text" style="text-align: center; color: rgba(0,0,0,0);">as</h1>
+      <div class="main-left-a">
+        
+        <div class="photo">
+          <div class="profile-photo">
+            <img src="../../static/images/profile_images/21.jpg" style="width: 100%; height: 100%; border-radius: 1em;">
+          </div>       
+        </div >
+
+        <div class="name"  >
+          <div>
+            <div>John</div>
+            <div>Brown</div>
+          </div>
+        </div>
+                
+        <div class="input-group">
+          <input type="file" class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload">
+        </div>
+
+        <div>
+          <button type="button" class="btn btn-secondary">Save</button>
+        </div>
+             <hr style="color: rgb(90, 178, 207); height: 3px;">   
+      </div> 
+      
+
+      <div class="main-left-b">
+        <div class="input-group flex-nowrap">
+          <!-- <span class="input-group-text" id="addon-wrapping"> -->
+            <span class="input-group-text" id="basic-addon1"><i class="fas fa-user"></i></span>
+          <!-- </span> -->
+          <input type="text" class="form-control" placeholder="John" aria-label="Username" aria-describedby="addon-wrapping" disabled>
+        </div>
+
+        <div class="input-group flex-nowrap">
+          <!-- <span class="input-group-text" id="addon-wrapping"> -->
+            <span class="input-group-text" id="basic-addon1"><i class="far fa-user"></i></span>
+          <!-- </span> -->
+          <input type="text" class="form-control" placeholder="Cennedy" aria-label="Username" aria-describedby="addon-wrapping" disabled> 
+        </div>
+
+        <div class="input-group flex-nowrap">
+          <!-- <span class="input-group-text" id="addon-wrapping"> -->
+            <span class="input-group-text" id="basic-addon1"><i class="far fa-envelope"></i></span>
+          <!-- </span> -->
+          <input type="text" class="form-control" placeholder="john@gmail.com" aria-label="Username" aria-describedby="addon-wrapping" disabled>
+        </div>
+
+        <div class="input-group flex-nowrap">
+          <!-- <span class="input-group-text" id="addon-wrapping"> -->
+            <span class="input-group-text" id="basic-addon1"><i class="fas fa-at"></i></span>
+          <!-- </span> -->
+          <input type="text" class="form-control" placeholder="johnythebig" aria-label="Username" aria-describedby="addon-wrapping" disabled>
+            
+            
+
+        </div>
+
+        <div class="input-group flex-nowrap">
+          <!-- <span class="input-group-text" id="addon-wrapping"> -->
+            <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar"></i></span>
+          <!-- </span> -->
+          <input type="text" class="form-control" placeholder="12.05.1983" aria-label="Username" aria-describedby="addon-wrapping" disabled>
+        </div>
+
+        <!-- <div class="input-group flex-nowrap">
+          <span class="input-group-text" id="addon-wrapping">
+            <span class="input-group-text" id="basic-addon1"><i class="fas fa-key"></i></span>
+          </span>
+          <input type="password" class="form-control" placeholder="****" aria-label="Username" aria-describedby="addon-wrapping" disabled>
+        </div> -->
+
+        <!-- <div class="input-group flex-nowrap">
+          <span class="input-group-text" id="addon-wrapping">
+            <span class="input-group-text" id="basic-addon1"><i class="fas fa-lock"></i></span>
+          </span>
+          <input type="password" class="form-control" placeholder="****" aria-label="Username" aria-describedby="addon-wrapping" disabled>
+        </div>  -->
+
+        <button type="button" class="btn btn-secondary">Save</button>
+
+      </div> 
+      
+    </div>
+       
+        <div id="main-center">
+          <div class="my-posts">
+            <h1 class="text" style="text-align: center;">John's Posts</h1>
+            <div class="main-center-elements">
+              <div class="main-center-elements-md">
+                <div>
+                  <b>12.03.2020</b>
+                </div>  
+                
+                <div>
+                      <p>Nice day. Have a good time. Nice day. Have a good time.Nice day. Have a good time</p>
+                  </div>
+                  <hr>
+                  <div class="interactions">
+                    <div class="interactions-left">
+                        <a href="#">
+                            <i class="far fa-thumbs-up fa-lg" style="color: white"></i>
+                        </a>
+                        <div class="number-of-likes">
+                            134
+                        </div>
+                    </div>
+
+                    <div class="interactions-center">
+                      <a href="#">
+                        <i class="far fa-comments fa-lg" style="color: white;"></i>
+                    </a>
+                    
+                    
+
+                    <div class="number-of-comments">
+                        134
+                    </div>
+                  </div>
+                   
+                    <!-- <div class="interactions-right">
+                      <a href="#">
+                        <i class="far fa-trash-alt fa-lg" style="color: white"></i>
+                    </a>
+                        <div class="remove">
+                            Remove
+                        </div>
+                    </div> -->
+                </div>
+
+              </div >
+
+            </div>
+             
+              
+            <div class="main-center-elements">
+              <div class="main-center-elements-md">
+                <div>
+                  <b>10.01.2020</b>
+                </div>  
+                
+                <div class="main-center-elements-md">
+                  <div>
+                      <p>My best friend</p>
+                  </div>
+                  <hr>
+                  <img class="image" src="../../static/images/fr9.jpeg" style="width: 100%;height:100% ;">
+              </div >
+                  <hr>
+                  <div class="interactions">
+                    <div class="interactions-left">
+                        <a href="#">
+                            <i class="far fa-thumbs-up fa-lg" style="color: white"></i>
+                        </a>
+                        <div class="number-of-likes">
+                            87
+                        </div>
+                    </div>
+
+                    <div class="interactions-center">
+                      <a href="#">
+                        <i class="far fa-comments fa-lg" style="color: white"></i>
+                    </a>
+                    
+                    
+
+                    <div class="number-of-comments">
+                        3
+                    </div>
+                  </div>
+                   
+                    <!-- <div class="interactions-right">
+                      <a href="#">
+                        <i class="far fa-trash-alt fa-lg" style="color: white"></i>
+                    </a>
+                        <div class="remove">
+                            Remove
+                        </div>
+                    </div> -->
+                </div>
+
+              </div >
+
+            </div>
+
+            <div class="main-center-elements">
+              <div class="main-center-elements-md">
+                <div>
+                  <b>10.01.2020</b>
+                </div>  
+                
+                <div class="main-center-elements-md">
+                  <div>
+                      <p>Nature</p>
+                  </div>
+                  <hr>
+                  <img class="image" src="../../static/images/fr17.jpg" style="width: 100%;height:100% ;">
+              </div >
+                  <hr>
+                  <div class="interactions">
+                    <div class="interactions-left">
+                        <a href="#">
+                            <i class="far fa-thumbs-up fa-lg" style="color: white;"></i>
+                        </a>
+                        <div class="number-of-likes">
+                            11
+                        </div>
+                    </div>
+
+                    <div class="interactions-center">
+                      <a href="#">
+                        <i class="far fa-comments fa-lg" style="color: white;"></i>
+                    </a>
+                    
+                    
+
+                    <div class="number-of-comments">
+                        13
+                    </div>
+                  </div>
+                   
+                    <!-- <div class="interactions-right">
+                      <a href="#">
+                        <i class="far fa-trash-alt fa-lg" style="color:white;"></i>
+                    </a>
+                        <div class="remove">
+                            Remove
+                        </div>
+                    </div> -->
+                </div>
+
+              </div >
+
+            </div>
+
+            <div class="main-center-elements">
+              <div class="main-center-elements-md">
+                <div>
+                  <b>10.12.2019</b>
+                </div>  
+                
+                <div>
+                      <p>The quick brown fox jumped over lazy dog</p>
+                  </div>
+                  <hr>
+                  <div class="interactions">
+                    <div class="interactions-left">
+                        <a href="#">
+                            <i class="far fa-thumbs-up fa-lg" style="color: white"></i>
+                        </a>
+                        <div class="number-of-likes">
+                            7
+                        </div>
+                    </div>
+
+                    <div class="interactions-center">
+                      <a href="#">
+                        <i class="far fa-comments fa-lg" style="color: white"></i>
+                    </a>
+                    
+                    
+
+                    <div class="number-of-comments">
+                        4
+                    </div>
+                  </div>
+                   
+                    <!-- <div class="interactions-right">
+                      <a href="#">
+                        <i class="far fa-trash-alt fa-lg" style="color: white"></i>
+                    </a>
+                        <div class="remove">
+                            Remove
+                        </div>
+                    </div> -->
+                </div>
+
+              </div >
+
+            </div>
+
+
+
+          </div>
+          </div>
+          
+        </div>
+        
+        <div id="main-right">
+        
+        </div>
+    </div>
+</body>
+
+
+{% endblock %}

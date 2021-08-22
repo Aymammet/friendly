@@ -1,0 +1,643 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_tags %}
+{% block extra_header %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"/>
+    <title>Profile - {{profile.username}}</title>
+    <link rel="stylesheet"  href=" {% static 'css/profile_style.css' %}" type="text/css" />
+{% endblock %}
+
+{% block content %}
+<header>
+</header>
+<main>
+    <div class="container">
+        <div  class="col-12" id="main-column">
+          <div class="col-4 each-column profile-details">
+            <div class="col-12">
+              {% if profile.username %}
+                <p id="profile-username">{{ profile.username }}'s Profile</p>  
+              {% endif %}
+            </div>
+            <div class="col-12">
+              {% if profile.image %}
+              <img src="{{profile.get_profile_image}}" id="profile-image" width="100%">
+              {% endif %}
+            </div>
+            <div class="col-12">
+                <p id="profile-name">{{ profile.name }} {{profile.surname}}</p>    
+            </div>
+            <div  class="col-12 interactions" style="display: flex; justify-content: center;">
+              <div class="col-4 p-0 likes-dislikes-comments">
+                <div> <i  class="far fa-thumbs-up "></i></div>
+                <div>23</div>
+              </div>
+                  
+              <div class="col-4 p-0 likes-dislikes-comments">
+                <div><i  class="far fa-thumbs-down "></i></div>
+                <div>123</div>
+              </div>
+              <div class="col-4 p-0 likes-dislikes-comments">
+                <div><i  class="far fa-comments"></i></div>
+                <div>1423</div>
+              </div>
+            </div>
+
+            <div class="col-12 actions">
+              {% if user.username == profile.username %}
+              <form method="GET" action="{% url 'profiles:edit_profile'  user.pk  %}">
+                {% csrf_token %}
+                <button style="width: 100%;" class="btn btn-outline-info" type="submit">Edit Profile</button>
+              </form >
+              {% else %}
+              {% if profile in user.friends.all %}
+              <form style="width: 100%;" method="POST" action="{% url 'notifications:remove_friend' profile.pk %}">
+                {% csrf_token %}
+                <button  style="width: 100%;" class="btn btn-outline-danger" type="submit">Remove from friends</button>
+              </form >
+              {% else %}
+              <form method="POST" action="{% url 'notifications:send_request' profile.pk  %}">
+                {% csrf_token %}
+                <button style="width: 100%;" class="btn btn-outline-success" type="submit">Add as friend</button>
+              </form >
+              {% endif %}
+              {% endif %}
+            </div>
+            <div class="col-12">
+              {% if user.username == profile.username %}
+              {% else %}
+              {% if profile in user.friends.all %}
+              <form style="width: 100%;" method="POST" action="{% url 'profiles:inbox' %}">
+                {% csrf_token %}
+                <button  style="width: 100%;" class="btn btn-outline-primary" type="submit">Send Message</button>
+              </form >
+              {% endif %}
+              {% endif %}
+            </div>
+
+            <div id="profile-bio" class="col-12">
+              <p>{{profile.bio}}</p>
+                  
+            </div>
+
+            <div class="col-12">
+              {% if profile.email %}
+                <p id="profile-email">{{ profile.email }}</p>  
+              {% endif %}
+            </div>
+            <div class="col-12">
+              {% if profile.birth_date %}
+                <p id="profile-birthd">{{ profile.birth_date }}</p>  
+              {% endif %}
+            </div>
+          </div>
+
+          <div class="col-8 ">
+            {% for post in posts %}
+              <div class="col-10 each-column">
+                <div class="row profile-row"> <!-- Profile Row -->
+                    <div class="col-2">
+                        <a aria-label="Profiles" href="{% url 'profiles:profile' post.owner_of_post.pk %}">
+                          <img src="{{post.owner_of_post.get_profile_image}}" class="avatar avatar-xs-32 avatar-sm-32 avatar-md-64 avatar-lg-64 avatar-xl-64 avatar-xxl-32x bg-light rounded-circle text-white" alt="Circular Image">
+                      </a>
+                    </div>
+
+                  <div class="col-8 p-0 ">
+                      <div class="col" ><b>{{post.owner_of_post}} </b></div>
+                      <div class="col post-created-date"> {{post.created_date}}</div>
+                  </div>
+
+                  <div class="col-2 edit-button">
+                      {% if post.owner_of_post == user %}
+                      <a  aria-label="Edit Post" href="{% url 'post:edit_post' post.pk %}"  class="col-2 edit-post" >
+                          <i class="fas fa-pen"></i>
+                      </a>
+                      {% endif %}
+                  </div>
+
+
+              </div> <!--End of Profile Row -->
+
+              <div class="row"> <!-- Description Row -->
+                  <div class="col-12">
+                      <p><i>{{post.description}}</i></p>
+                  </div>
+              </div> <!-- End of Description Row -->
+
+              <div class="row"> <!-- Image Row -->
+                  <div class="col-12">
+                      {% if post.image %}
+                          <div class="post-image">
+                              <img class="post-image-url" width="100%"  src="{{post.image.url}}" alt="Card image cap">
+                          </div>
+                      {% endif %}
+                  </div>
+              </div>  <!-- End of Image Row -->
+
+              <div class="row user-likes-dislikes-comments"> <!-- Like-Dislike Row -->
+                  <div class="col-4 like-dislike-comment">
+                      {% if user in post.likes.all %}
+                          <i  id="{{post.id}}" class="fas fa-thumbs-up rate black "></i>
+                      {% else %}
+                          <i  id="{{post.id}}" class="far fa-thumbs-up rate white" ></i>
+                      {% endif %}    
+                      <div class="like_count" id="{{post.id}}">
+                          {{post.likes.all.count}} 
+                      </div>
+                  </div>
+
+                  <div class="col-4 like-dislike-comment">
+                      {% if user in post.dislikes.all %}
+                          <i id="{{post.id}}" class="fas fa-thumbs-down info rate_dislike black_two info" ></i>
+                      {% else %}
+                          <i id="{{post.id}}" class="far fa-thumbs-down rate_dislike white_two" ></i>
+                      {% endif %}
+                      <div class="dislike_count" id="{{post.id}}" > {{post.dislikes.all.count}} </div>
+                  </div>
+
+                  <div class="col-4 like-dislike-comment">
+                      <div >
+                          <input type="hidden" name="next" value="{{request.path}}">
+                          <i id="{{post.id}}" class="far fa-comments  textarea" ></i>
+                          <div class="number_of_coms" id="{{post.id}}"   > {{post.comments_set.count}} </div>
+                      </div>
+                  </div>
+
+              </div>  <!-- End of Like Dislike Row -->
+
+              <div class="row"> <!-- Comment Input Row -->
+                  <div class="col comment-input"">
+                      <input class="input-send-comment comment_text"   id="{{post.id}}"    name="comment" placeholder="Enter your comment here..." ></input>
+                  </div>
+
+                  <div class="send">
+                      <div>
+                          <button id="{{post.id}}"  type="submit" class="btn btn-outline-primary send-button">Send</button>
+                      </div>
+                  </div>
+              </div>  <!-- End of Comment input Row -->
+
+              <div id="{{post.id}}""  class="row comments {{post.id}}  user_comments" style="display: none;"> <!-- Coments Row-->
+                  {% for comment in post.comments_set.all %}
+                  <!-- <div class="row"> -->
+                      
+                          <div class="col-1 comment-avatar"  >
+                              <img class="avatar  avatar-32 avatar-md-32 avatar-lg-32 avatar-xl-32 bg-light rounded-circle text-white" src="{{comment.owner_of_comments.get_profile_image}}">
+                          </div>
+                          <div class="col-11 comment-owner" >
+                              <div class="col-12"  >
+                                  <b> {{ comment.owner_of_comments }}  </b> <span class="comment-date">{{ comment.created_date }}</span>
+                              </div>
+                              <div class="col-12" >
+                                  {{ comment.comment }}
+                              </div>
+                          </div>
+                          <br>
+                      
+                      
+                  <!-- </div> -->
+              {% empty %}
+                  <p class="no-comment" > <i id="{{post.id}}" class="no_comments_yet"> -- No Comments yet  --  </i> </p>
+              {% endfor %}
+              </div> <!--End of Comments Row-->
+          </div>
+            {% endfor %}
+          </div>
+        </div>
+    </div>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+          // 1
+          // var comments = document.getElementById('user-comments');
+          // var b = document.querySelector('.user-comment-elements');
+          var c = document.getElementsByClassName('far fa-comments');
+          for (i = 0; i < c.length; i++) {
+              c[i].addEventListener('click', function() {
+                  user_comments = document.getElementsByClassName(this.id)
+                  if (user_comments[0].style.display == 'none'){
+                     user_comments[0].style.display = 'flex';
+                  }
+                  else if(user_comments[0].style.display == 'flex') {
+                      user_comments[0].style.display = 'none';
+                  }
+              })
+          }
+
+          // 2
+          
+          like_button = document.getElementsByClassName('rate');
+          for (var i = 0; i < like_button.length; i++) {
+              like_button[i].addEventListener('click', function(event){
+                  var post_id = event.target.id
+                  let xhr = new XMLHttpRequest();
+                  xhr.open('POST', "{% url 'post:post_like' %}");
+                  xhr.setRequestHeader('X-CSRFToken', '{{csrf_token}}');
+                  xhr.setRequestHeader('Content-Type', 'application/json');
+                  xhr.send(JSON.stringify({post_pk:event.target.id }));
+                  xhr.onreadystatechange = () => {
+                      if (xhr.readyState != 4) return;
+                      if (xhr.status == 200) {
+                          const data = JSON.parse(xhr.responseText)
+                          var liked_divs = document.getElementsByClassName('like_count')
+                          var disliked_divs = document.getElementsByClassName('dislike_count')
+                          for (var j = 0; j < liked_divs.length; j++) {
+                              if (liked_divs[j].id == data['post_id'] ){
+                                  liked_divs[j].textContent = data['likes'];
+                                  disliked_divs[j].textContent = data['dislikes'];
+                                  if (data['state'] == 'yes-like') {
+                                      thumbs_up = document.getElementsByClassName('white')
+                                      thumbs_down = document.getElementsByClassName('black_two')
+                                      for (p = 0; p < thumbs_up.length; p++) {
+                                          if (thumbs_up[p].id == post_id) {  
+                                              thumbs_up[p].className = "fas fa-thumbs-up fa-2x rate black" 
+                                          }
+                                      }
+                                      for (p = 0; p < thumbs_down.length; p++) {
+                                          if (thumbs_down[p].id == post_id) {  
+                                              thumbs_down[p].className = "far fa-thumbs-down fa-2x rate white_two" 
+                                          }
+                                      }
+                                  }
+                                  if (data['state'] == 'no-like') {
+                                      thumbs_up = document.getElementsByClassName('black')
+                                      for (p = 0; p < thumbs_up.length; p++) {
+                                          if (thumbs_up[p].id == post_id) {
+                                              thumbs_up[p].className = "far fa-thumbs-up fa-2x rate white"
+                                          }
+                                      }
+                                  }
+                              }
+                          }
+                      }
+                      if (xhr.status == 403) {
+                          document.location.href = "{% url 'authenticate:main_page' %}?next={{ request.get_full_path|urlencode }}"
+                      }
+                  } 
+              })
+          }
+
+          // 3
+
+          dislike_button = document.getElementsByClassName('rate_dislike');
+          for (var i = 0; i < dislike_button.length; i++) {
+              dislike_button[i].addEventListener('click', function(event){
+                  var dislike_post_id = event.target.id
+                  let xhr = new XMLHttpRequest();
+                  xhr.open('POST', "{% url 'post:post_dislike' %}");
+                  xhr.setRequestHeader('X-CSRFToken', '{{csrf_token}}');
+                  xhr.setRequestHeader('Content-Type', 'application/json');
+                  xhr.send(JSON.stringify({disliked_post_pk:event.target.id }));
+                  xhr.onreadystatechange = () => {
+                      if (xhr.readyState != 4) return;
+                      if (xhr.status == 200) {
+                          const taken_data = JSON.parse(xhr.responseText)
+                          var disliked_divs = document.getElementsByClassName('dislike_count')
+                          var liked_divs = document.getElementsByClassName('like_count')
+                          for (var j = 0; j < disliked_divs.length; j++) {
+                              if (disliked_divs[j].id == taken_data['dislike_post_id'] ){
+                                  disliked_divs[j].textContent = taken_data['dislikes'];
+                                  liked_divs[j].textContent = taken_data['likes']
+                                  if (taken_data['state'] == 'yes-dislike') {
+                                      thumbs_down = document.getElementsByClassName('white_two')
+                                      thumbs_up = document.getElementsByClassName('black')
+                                      for (p = 0; p < thumbs_down.length; p++) {
+                                          if (thumbs_down[p].id == dislike_post_id) {  
+                                              thumbs_down[p].className = "fas fa-thumbs-down fa-2x rate black_two"
+                                          }
+                                      }
+                                      for (p = 0; p < thumbs_up.length; p++) {
+                                          if (thumbs_up[p].id == dislike_post_id) {  
+                                              thumbs_up[p].className = "far fa-thumbs-up fa-2x rate white"
+                                          }
+                                      }
+                                  }
+                                  if (taken_data['state'] == 'no-dislike') {
+                                      thumbs_down = document.getElementsByClassName('black_two')
+                                      for (p = 0; p < thumbs_down.length; p++) {
+                                          if (thumbs_down[p].id == dislike_post_id) {
+                                              thumbs_down[p].className = "far fa-thumbs-down fa-2x rate white_two"
+                                          }
+                                      }
+                                  }
+                              }
+                          }
+                      }
+                      if (xhr.status == 403) {
+                          document.location.href = "{% url 'authenticate:main_page' %}?next={{ request.get_full_path|urlencode }}"
+                      }
+                  } 
+              })
+          }
+
+          // 4
+
+          send_button = document.getElementsByClassName('send-button');
+          comment_text = document.getElementsByClassName('comment_text');
+          for (var i = 0; i < send_button.length; i++) {
+              send_button[i].addEventListener('click', function(event){
+                  post_id = event.target.id
+                  for (i = 0; i < comment_text.length; i++) {
+                      if (comment_text[i].id == post_id ) {
+                          sent_comment_text = comment_text[i].value; 
+                          comment_text[i].value = ''
+                      }
+                  }
+                  let xhr = new XMLHttpRequest();
+                  xhr.open('POST', "{% url 'post:comment' %}");
+                  xhr.setRequestHeader('X-CSRFToken', '{{csrf_token}}');
+                  xhr.setRequestHeader('Content-Type', 'application/json');
+                  xhr.send(JSON.stringify({post_pk:post_id, comment:sent_comment_text}));
+                  xhr.onreadystatechange = () => {
+                      if (xhr.readyState != 4) return;
+                      if (xhr.status == 200) {
+                          const received = JSON.parse(xhr.responseText)
+                          no_of_comments = received['number_of_comments']
+                          new_comment = received['new_comment']
+                          comm_date = received['comm_date']
+                          all_comments = received['all_comments']
+                          users = received['all_users']
+                          const user_comments_new = document.getElementsByClassName('user_comments');
+                          for (q = 0; q < user_comments_new.length; q++){
+                              if (user_comments_new[q].id == post_id ){
+                                  while (user_comments_new[q].lastElementChild) {
+                                      user_comments_new[q].removeChild(user_comments_new[q].lastElementChild);
+                                  }
+                              }
+                          }
+                          coms = document.getElementsByClassName('number_of_coms')
+                          for (i = 0; i < coms.length; i++) {
+                              if(coms[i].id == post_id) {
+                                 coms[i].textContent = no_of_comments
+                              }
+                          }
+                          for (i = 0; i < all_comments.length; i++) {
+                              if (all_comments[i].comment) {
+                                  div1 = document.createElement('div')
+                              div1.classList.add('col-1')
+                              div1.classList.add('comment-avatar')
+                              img1 = document.createElement('img')
+                              img1.classList.add('avatar')
+                              img1.classList.add('avatar-32')
+                              img1.classList.add('avatar-md-32')
+                              img1.classList.add('avatar-lg-32')
+                              img1.classList.add('avatar-xl-32')
+                              img1.classList.add('bg-light')
+                              img1.classList.add('rounded-circle')
+                              img1.classList.add('text-white')
+                              img1.src = all_comments[i].owner_of_comment_image
+                              div1.appendChild(img1)
+                              div2 = document.createElement('div')
+                              div2.classList.add('col-11')
+                              div2.classList.add('comment-owner')
+                              div3 = document.createElement('div')
+                              div2.appendChild(div3)
+                              div3.classList.add('col-12')
+                              b1 = document.createElement('b')
+                              b1.innerHTML = all_comments[i].owner_of_comment
+                              div3.appendChild(b1)
+                              span1 = document.createElement('span')
+                              span1.innerHTML = all_comments[i].created_date
+                              span1.classList.add('comment-date')
+                              div3.appendChild(span1)
+                              div4 =document.createElement('div')
+                              div4.classList.add('col-12')
+                              div4.innerHTML = all_comments[i].comment
+                              div2.appendChild(div4)
+
+                              for (j = 0 ; j < user_comments_new.length; j ++) {
+                                  if (user_comments_new[j].id == post_id) {
+                                      user_comments_new[j].appendChild(div1);
+                                      user_comments_new[j].appendChild(div2);
+                                  }
+                              }
+                          }    
+                      }
+                  }
+                      if (xhr.status == 403) {
+                          document.location.href = "{% url 'authenticate:main_page' %}?next={{ request.get_full_path|urlencode }}"
+                      }
+                  }
+              })
+          }
+      })
+  </script>
+  
+</main>
+{% endblock %}
+
+
+
+<body>
+  <div id="main">
+    <div id="main-left">
+      <h1 class="text" style="text-align: center; color: rgba(0,0,0,0);">as</h1>
+      <div class="main-left-a">
+        
+        <div class="photo">
+          <div class="profile-photo">
+            {% if profile.image %}
+            <img src="{{profile.get_profile_image}}" style="width: 100%; height: 100%; border-radius: 1em;">
+            {% endif %}
+          </div>       
+        </div >
+
+        <div class="name"  >
+          
+            <div>{% if profile.username %} 
+              {{profile.username}} 
+              <span>
+                {% if user.username == profile.username %}
+                <a href="{% url 'profiles:edit_profile' profile.pk %}"  style="text-decoration: none; color: inherit;">
+                  <button class="btn btn-success">
+                    <div>
+                      <i class="far fa-edit"></i>
+                  </div>
+                  <div>
+                    Edit your Profile
+                </div>
+                </button>
+                </a>
+                {% endif %}
+              </span>
+              {% endif %}</div>
+        
+        </div>  
+             <hr style="color: rgb(90, 178, 207); height: 3px;">   
+      </div> 
+      
+
+      <div class="main-left-b">
+        <div class="input-group flex-nowrap">
+          <!-- <span class="input-group-text" id="addon-wrapping"> -->
+            <span class="input-group-text" id="basic-addon1"><i class="far fa-user"></i></span>
+          <!-- </span> -->
+          <input type="text" class="form-control" placeholder="{% if profile.name %} {{profile.name}} {% endif %}" aria-label="Username" aria-describedby="addon-wrapping" disabled>
+        </div>
+
+        <div class="input-group flex-nowrap">
+          <!-- <span class="input-group-text" id="addon-wrapping"> -->
+            <span class="input-group-text" id="basic-addon1"><i class="fas fa-user"></i></span>
+          <!-- </span> -->
+          <input type="text" class="form-control" placeholder="{% if profile.surname %} {{profile.surname}} {% endif %}" aria-label="Username" aria-describedby="addon-wrapping" disabled>
+        </div>
+
+        <div class="input-group flex-nowrap">
+          <!-- <span class="input-group-text" id="addon-wrapping"> -->
+            <span class="input-group-text" id="basic-addon1"><i class="fas fa-calendar"></i></span>
+          <!-- </span> -->
+          <input type="text" class="form-control" placeholder="{% if profile.birth_date %} {{profile.birth_date}} {% endif %}" aria-label="Username" aria-describedby="addon-wrapping" disabled>
+        </div>
+
+        <div class="input-group flex-nowrap">
+          <!-- <span class="input-group-text" id="addon-wrapping"> -->
+            <span class="input-group-text" id="basic-addon1"><i class="far fa-envelope"></i></span>
+          <!-- </span> -->
+          <input type="text" class="form-control" placeholder="{% if profile.email %} {{profile.email}} {% endif %}" aria-label="Username" aria-describedby="addon-wrapping" disabled>
+        </div>
+
+        <div class="input-group flex-nowrap">
+          <!-- <span class="input-group-text" id="addon-wrapping"> -->
+            <span class="input-group-text" id="basic-addon1"><i class="far fa-calendar"></i></span>
+          <!-- </span> -->
+          <textarea type="text" class="form-control" aria-label="Username" aria-describedby="addon-wrapping" disabled> {% if profile.bio %} {{profile.bio}} {% endif %}"</textarea>
+        </div>
+
+        <p class="btn btn-info" style="font-weight:bold"> Friends: {{number_of_friends}} </p>
+            
+      
+
+     
+
+        <div class="input-group flex-nowrap">
+          <!-- <span class="input-group-text" id="addon-wrapping"> -->
+           
+          <!-- </span> -->
+          <div>
+            
+            {% if user.username == profile.username %}
+            {% else %}
+            {% if profile in user.friends.all %}
+            <form method="POST" action="{% url 'notifications:remove_friend' profile.pk %}">
+              {% csrf_token %}
+              <button class="btn btn-outline-danger" type="submit">Remove from friends</button>
+            </form >
+            {% else %}
+            <form method="POST" action="{% url 'notifications:send_request' profile.pk  %}">
+              {% csrf_token %}
+              <button class="btn btn-outline-success" type="submit">Add as friend</button>
+            </form >
+            {% endif %}
+            {% endif %}
+          </div>
+            
+
+        </div>
+
+        <!-- <div class="input-group flex-nowrap">
+          <span class="input-group-text" id="addon-wrapping">
+            <span class="input-group-text" id="basic-addon1"><i class="fas fa-key"></i></span>
+          </span>
+          <input type="password" class="form-control" placeholder="****" aria-label="Username" aria-describedby="addon-wrapping" disabled>
+        </div> -->
+
+        <!-- <div class="input-group flex-nowrap">
+          <span class="input-group-text" id="addon-wrapping">
+            <span class="input-group-text" id="basic-addon1"><i class="fas fa-lock"></i></span>
+          </span>
+          <input type="password" class="form-control" placeholder="****" aria-label="Username" aria-describedby="addon-wrapping" disabled>
+        </div>  -->
+
+        
+
+      </div> 
+      
+    </div>
+       
+        <div id="main-center">
+          <div class="my-posts">
+            <h1 class="text" style="text-align: center;">{{profile.username}}'s Posts</h1>
+            {% for post in posts %}
+            <a href="{% url 'post:post_detail' post.pk %}" style="text-decoration: none; color: inherit;">
+            <div class="main-center-elements">
+              <div class="main-center-elements-md">
+                <div>
+                  <p style="color: rgb(136, 136, 136);">{{post.created_date}}</p>
+                </div>  
+                
+                <div>
+                      <p>{{post.description}}</p>
+                  </div>
+                  <hr>
+                </a>
+
+                  {% if post.image %}
+                  <img class="image" src="{{post.image.url}}" style="width: 100%;height:100% ;">
+                  {% endif %}
+                  <div class="interactions" style="padding: 10px;">
+                    
+                      <div >
+                        <form style="display: flex; align-items: center;" method="POST", action="{% url 'post:post_like' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="next" value="{{request.path}}">
+                            <button title="Like" class="number-of-likes interactions-one"  type="submit">  <i class="far fa-thumbs-up fa-2x" style="color: rgb(90, 178, 207);"></i></button> 
+                            <div style="font-weight: bold;" > {{post.likes.all.count}} </div>
+                        </form >
+                        
+                    
+                    </div>
+                    
+
+                    
+                      <div >
+                        <form style="display: flex; align-items: center;" method="POST", action="{% url 'post:post_dislike' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="next" value="{{request.path}}">
+                            <button title="Comment" class="number-of-likes interactions-one" title="Dislike" type="submit">  <i class="far fa-thumbs-down fa-2x" style="color: rgb(90, 178, 207);"></i></button> 
+                            <div style="font-weight: bold;" > {{post.dislikes.all.count}} </div>
+                        </form >
+                        
+                    
+                    </div>
+                  
+                    
+                      <a href="#" style="text-decoration: none; color: inherit; display: flex; align-items: center;">
+                        <i class="far fa-comments fa-2x" style="color: rgb(90, 178, 207);"></i>
+                        <div  style="font-weight: bold;" class="number-of-comments">
+                          {{post.comments_set.count}}
+                        </div>
+                    </a>
+                    
+                    
+
+                  
+                  
+                   
+                    <!-- <div class="interactions-right">
+                      <a href="#">
+                        <i class="far fa-trash-alt fa-lg" style="color: white"></i>
+                    </a>
+                        <div class="remove">
+                            Remove
+                        </div>
+                    </div> -->
+                </div>
+
+              </div >
+
+            </div>
+         
+            {% endfor %}
+             
+
+
+          </div>
+          </div>
+          
+        </div>
+        
+        <div id="main-right">
+        
+        </div>
+    </div>
+</body>
+

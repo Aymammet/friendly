@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block extra_header %}
+    {% if redirect_page %}
+        <meta http-equiv="refresh" content="3;url={{ redirect_page }}"/>
+    {% endif %}
+{% endblock %}
+
+
+
+{% block content %}
+<head>
+    <title>Info Page</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="{% static 'css/base_style.css' %}">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"
+    />
+</head>
+
+
+<body>
+    <div class="main">
+        <h2> {{ data }} </h2>
+    </div> 
+</body>
+     
+
+{% endblock %}

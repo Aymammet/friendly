@@ -1,0 +1,115 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    
+}
+  body {
+    background: #b783c4;
+}
+
+
+#main {
+    display: flex;
+    /* margin: 10px; */
+    margin-top: 50px ;
+    
+  }
+
+  #main-left {
+   
+    width: 20vw;
+    border-radius: 5px;
+    /* margin: 3px; */
+    text-align: center;
+    /* border: 1px solid black; */
+    padding: 5px;
+  }
+  
+  #main-center {
+    /* border: 1px solid rgb(156, 18, 18); */
+    width: 50vw;
+    border-radius: 5px;
+    padding: 5px;
+    /* margin: 3px; */
+    /* background: url('../images/fr8.jpg') no-repeat; */
+    /* background-color: #cccccc; */
+    background-position: center;
+    background-size: cover;
+    overflow-y: hidden; 
+    overflow-x: hidden;
+  }
+  #main-center-posts{
+    border: 1px solid rgb(62, 62, 65);
+    margin-bottom: 20px;
+    padding: 5px;
+    border-radius: 5px;
+
+  }
+  #main-right {
+    /* border: 1px solid black; */
+    width: 30vw;
+    border-radius: 5px;
+    padding: 5px;
+    /* margin: 3px; */
+    /* background: url('../images/fr8.jpg') no-repeat; */
+    /* background-color: #cccccc; */
+    background-position: center;
+    background-size: cover;
+    overflow-y: hidden; 
+    overflow-x: hidden;
+  }
+
+  .main-center-up {
+    /* background-color: to mato; */
+    /* margin: 10px; */
+    display: flex;
+    height: 60px;
+}
+
+.main-center-up-comment {
+    /* background-color: teal; */
+    /* margin: 10px; */
+    font-style: italic;
+}
+
+.center-2 {
+    /* background-color: violet; */
+    margin-left: 30px;
+    font-weight: bold;
+    align-items: center;
+    /* border: 1px solid black; */
+    
+
+}
+
+.center-avatar {
+    width: 60px; 
+    height: 60px; 
+    border-radius: 20px;
+    /* margin: 10px; */
+}
+
+.image-zone {
+    width: 100%;
+    background-color: aqua;   
+    height: 350px ;
+    margin-bottom: 10px;
+}
+
+.comments-zone {
+    display: flex;
+    /* border: 1px solid black ; */
+    margin-bottom: 10px;
+}
+
+.comments {
+    padding-left: 15px;
+    /* border: 1px solid rgb(179, 24, 24) ; */
+    width: 100%;
+    
+}
+
+.comments-date {
+    text-align: right;
+}

@@ -1,0 +1,158 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<head>
+    <title>Detail Page || {{post.description}}</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="{% static 'css/home_style.css' %}">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"
+    />
+    <script src="{% static 'scripts/home.js' %}"></script>
+</head>
+
+  <body>
+    <div class="main">
+        <div class="main-center">
+            <div class="main-center-elements">
+                <a title="{{post.owner_of_post.username}} Profile" href="{% url 'profiles:profile' post.owner_of_post.pk %}"  style="text-decoration: none; color: inherit;">
+                    <div class="main-center-elements-up">
+                        <div class="up-left">
+                            <div class="user-profile-photo">
+                                
+                                <img src="{{post.owner_of_post.get_profile_image}}" style="width: 100%; height: 100%; border-radius: 50%;">
+                                
+                            </div>
+                        </div>
+                                
+                        <div class="up-right">
+                            <div class="user-name">
+                                {{post.owner_of_post}}
+                            </div>
+                            <div class="user-posted-date"> 
+                                {{post.created_date}}
+                            </div> 
+                        </div>
+                    </div>
+                </a>
+                <hr>
+                <a title="Post Detail" href="{% url 'post:post_detail' post.id %}" id="link_to_detail"  style="text-decoration: none; color: inherit;">
+                    
+                <div class="main-center-elements-md">
+                    <div class="middle-left">
+
+                    </div>
+                    <div class="middle-right">
+                        <p class="img-description" style="font-style:italic">{{post.description}}</p>
+                        {% if post.description %}
+                        
+                        {% endif %}
+                            {% if post.image %}
+                            <img src="{{post.image.url}}" style="border-radius: 5px;">
+                            <hr>
+                            {% else %}
+                            <img style="border-radius: 5px;">
+                            {% endif %}
+                                
+                    </div>
+                </div >
+                </a>
+                <div class="main-center-elements-bm">
+                    <div class="interactions">
+                        <div class="interactions-a">
+                        </div >
+                        <div class="interactions-b">
+                            <div >
+                                    <form style="display: flex; align-items: center;" method="POST", action="{% url 'post:post_like' %}">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="next" value="{{request.path}}">
+                                        <button title="Like" class="number-of-likes interactions-one" type="submit">  <i class="far fa-thumbs-up fa-2x" style="color: rgb(90, 178, 207);"></i></button> 
+                                        <div style="font-weight: bold;" > {{post.likes.all.count}} </div>
+                                    </form >
+                                    
+                                
+                            </div>
+
+                            <div >
+                                <form style="display: flex; align-items: center;" method="POST", action="{% url 'post:post_dislike' %}">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="next" value="{{request.path}}">
+                                    <button title="Comment" class="number-of-likes interactions-one" title="Dislike" type="submit" >  <i class="far fa-thumbs-down fa-2x" style="color: rgb(90, 178, 207);"></i></button> 
+                                    <div style="font-weight: bold;" > {{post.dislikes.all.count}} </div>
+                                </form >
+                                
+                            
+                            </div>
+
+                            <div >
+                                <div style="display: flex; align-items: center;" >
+                                    <button id="comment_button" class="number-of-likes interactions-one" title="Comments" ><i class="far fa-comments fa-2x" style="color: rgb(90, 178, 207);"></i></button> 
+                                    <div style="font-weight: bold;" > {{post.comments_set.count}} </div>
+                                </div >
+                            </div>
+                        </div >
+                    </div><div id="user-comments">
+                        {% for comment in post.comments_set.all %}
+                        <div class="user-comment-elements">
+                            
+                            <div class="user-comments-a">
+                                <img src="{{comment.owner_of_comments.get_profile_image}}" style="width: 50px; height: 50px; border-radius: 50%;">
+                            </div>
+    
+                            <div class="user-comments-b">
+                                <div>
+                                    <span style="font-weight: bold;">{{ comment.owner_of_comments }}</span> 
+                                    <span style="color: rgb(173, 173, 173);"">{{ comment.created_date }}</span>
+                                      
+                                </div>
+    
+                                <div style="word-wrap: break-word;">
+                                    {{ comment.comment }}
+                                </div>
+                                
+                                
+                               
+                            </div>
+                            
+                            <hr>
+                        </div >
+                        <hr>
+                        {% empty %}
+                        <p> <i>No Comments yet </i> </p>
+                        {% endfor %}
+                      
+                        
+                    </div >
+
+
+                    <div class="commentsx">
+                        
+                    </div >
+                </div>
+
+                {% if post.owner_of_post.username == user.username %}
+                    <div style="display: flex; justify-content: center; width: 100%; ">
+                        <a href="{% url 'post:edit_post' post.id %}"  class="btn btn-success" style="width: 100px; margin: 15px;">
+                            <i class="fas fa-edit fa-1x" style="color: white;"></i>
+                        </a>
+
+                       
+
+
+                        <form action="{% url 'post:delete_post' post.id %}"  method="GET">
+                            {% csrf_token %}
+                            <button  class="btn btn-danger" style="width: 100px; margin: 15px;"><i class="fas fa-times fa-1x" style="color: white;"></i></button>
+                        </form>
+                    </div>
+                    {% else %}
+                    <div></div>
+                    {% endif %}
+
+            </div >
+        </div>
+    
+</div>
+</body>  
+{% endblock %}

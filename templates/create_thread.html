@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<head>
+    <title>Create Thread</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="{% static 'css/home_style.css' %}">
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"
+    />
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 p-5" style="display: flex; justify-content: center; flex-direction: column; align-items: center;"">
+                <a href="{% url 'profiles:inbox' %}" class="btn btn-primary">Go to back Inbox</a>
+            </div>
+        </div>
+        
+        <div class="row justify-content-center mt-3 mb-5" >
+            <div class="col-md-5 col-sm-12 ">
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-danger">{{message}}</div>
+                    {% endfor %}
+                {% endif %}
+                <form method="POST" style="display: flex; justify-content: center; flex-direction: column; align-items: center;">
+                    {% csrf_token %}
+                    <p>Enter the username you wanna to send message</p>
+                    {{form.as_p}}
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-success mt-3" type="submit"> Continue</button >
+                    </div >
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+{% endblock content %}

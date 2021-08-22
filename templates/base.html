@@ -1,0 +1,453 @@
+{% load static %}
+{% load custom_tags %}
+{% load custom_tags-2 %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="Social Media Web App">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Merienda+One">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet"  href=" {% static 'css/avatar-ui-bootstrap/dist/avatar.css' %}" type="text/css" />
+	<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/avatar.css" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script> -->
+	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+	<link rel="stylesheet"  href=" {% static 'css/base_style.css' %}" type="text/css" />
+	{% block extra_header %}{% endblock %}
+</head> 
+<body>
+<nav class="navbar navbar-expand navbar-light bg-primary m-0">
+	
+	<a id="main" aria-label="Home" href="{% url 'post:home' %}" class="navbar-brand" id="social-web-app" >Friendly-Social Web App </a>
+	<button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse" aria-label="Menu">
+		<span class="navbar-toggler-icon"></span>
+	</button>
+	<!-- Collection of nav links, forms, and other content for toggling -->
+	<div id="navbarCollapse" class="collapse navbar-collapse justify-content-start">
+		<!-- {% if user.username %} -->
+		<div class="navbar-nav ml-auto">
+			<div >
+				<a id="new-post-button"  aria-label="New Post" href="{% url 'post:new_post' %}" >
+					<i class="fas fa-plus fa-3x" ></i>
+				</a>
+			</div>
+
+			<div class="nav-item dropdown">
+				<a aria-label="search" href="{% url 'notifications:friends' %}" class="nav-link " data-toggle="dropdown">
+					<i class="fas fa-search menu-items" ></i>
+				</a>
+				<div  class="dropdown-menu m-0 p-0" id="dropdown-menu-4">
+					<form  method="GET"  action="{% url 'notifications:user_search' %}" class="navbar-form form-inline m-0 p-0">
+						<div  class="input-group search-box m-0 p-0" >								
+							<input style="font-style: italic;" type="text" id="search" name="query" value="{{ request.GET.query }}" class="form-control" placeholder="Search for users...">
+							<span class="input-group-addon"><i class="material-icons">&#xE8B6;</i></span>
+						</div>
+					</form>
+				</div>
+			</div>
+
+			<div class="navbar-nav ml-auto">
+				<a aria-label="Friends" href="{% url 'notifications:all_friends' %}" class="nav-link " >
+					<i class="fas fa-users  menu-items"></i>
+				</a>
+				<!-- <div class="dropdown-menu">
+                    {% for friend in user.friends.all %}
+					<a href="#" class="dropdown-item">
+						<a href="{% url 'profiles:profile' friend.pk %}" class="nav-link user-action">
+							<img class="avatar avatar-xs-16 avatar-sm-32 avatar-md-32 rounded-circle text-white" src={{friend.get_profile_image}}>{{friend.name}}
+						</a>
+					</a>
+                    {% endfor %}
+					<div class="dropdown-divider"></div>
+					<a href="{% url 'notifications:friends' %}" class="dropdown-item">All Friends </a>
+				</div> -->
+			</div>
+
+			<!-- <div >
+				<a  aria-label="New Post" href="{% url 'post:new_post' %}" >
+					<i class="fas fa-plus" ></i>
+					<div>New Post</div>
+					
+				</a>
+			</div> -->
+
+
+            <div class="dropdown">
+                <!-- <div class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> -->
+                    <a class="nav-item nav-link dropdown-toggle notifications" aria-label="Post and Comment Notifications" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"  aria-expanded="false"><i class="far fa-bell fa-2x dropdown  menu-items "></i><span id="notf-count" class="badge">{{notification_count}}</span></a>
+                <!-- </div> -->
+					<div  class="dropdown-menu" id="dropdown-menu-3" aria-labelledby="navbarDropdown">
+						{% if user.username %}
+							{% show_notifications %}
+						{% endif %}
+                    </div>
+            </div>
+			
+			<div class="dropdown">
+                <!-- <div class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> -->
+                    <a class="nav-item nav-link dropdown-toggle notifications" aria-label="Message Notifications" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"  aria-expanded="false"><i class="far fa-envelope fa-2x envelop  menu-items "></i><span id="notf-count-2" class="badge">{{notification_count_m}}</span></a>
+                <!-- </div> -->
+					<div  class="dropdown-menu" id="dropdown-menu-6" aria-labelledby="navbarDropdown">
+						<div id="d-menu">
+							{% if user.username %}
+								{% show_notifications2 %}
+							{% endif %}
+						</div>
+						
+						<div class="col-12" style="display: flex; justify-content: center;">
+							<a href="{% url 'profiles:inbox' %}" title="Messages" style="width: 100%; text-decoration: none; text-align: center;">- All Messages -
+							</a>
+						</div>
+                    </div>
+            </div>
+
+            <!-- <div class="dropdown">
+                <div data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a role="button" data-bs-toggle="dropdown"  aria-expanded="false" aria-label="Message Notifications" href="#" class="nav-item nav-link dropdown-toggle notifications"><i class="far fa-envelope  menu-items" ></i><span id="notf-count-2" class="badge">{{notification_count_m}}</span></a>
+            
+                    <div  class="dropdown-menu" id="dropdown-menu-2" aria-labelledby="dropdownMenuButton">
+						{% if user.username %}
+							{% show_notifications2 %}
+						{% endif %}
+					
+						<div class="col-12" style="display: flex; justify-content: center;">
+							<a href="{% url 'profiles:inbox' %}" title="Messages" style="width: 100%; text-decoration: none; text-align: center;">All Messages
+							</a>
+						</div>
+						
+                    </div>
+                </div>
+            </div> -->
+            <div class="nav-item dropdown">
+				<a aria-label="Profiles" href="{% url 'profiles:profile' user.pk %}" data-toggle="dropdown" id="username" class="nav-link  user-action"><img src="{{user.get_profile_image}}" class="avatar  avatar-md-32 bg-light rounded-circle text-white" alt="Avatar"> {{user.username}} <b class="caret"></b></a>
+				<div class="dropdown-menu">
+					<a aria-label="Profiles" href="{% url 'profiles:profile' user.pk %}" class="dropdown-item"><i class="fa fa-user"></i> Profile</a></a>
+					<a aria-label="Settings" href="#" class="dropdown-item"><i class="fa fa-sliders"></i> Settings</a></a>
+					<div class="dropdown-divider"></div>
+					<a aria-label="Logout" href="{% url 'authenticate:logout' %}" class="dropdown-item"><i class="material-icons">&#xE8AC;</i> Logout</a></a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- {% endif %} -->
+</nav>   
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var dt = 3000
+		count();
+        xbutton();
+		acceptbutton();
+		rejectbutton();
+
+		setInterval(count, dt);
+		setInterval(xbutton2, dt);
+		setInterval(xbutton3, dt);
+		setInterval(acceptbutton, dt);
+		setInterval(rejectbutton, dt);
+			
+
+		function xbutton() {
+			close_button = document.getElementsByClassName('clo')
+        	for (i = 0; i < close_button.length; i++) {
+            	close_button[i].addEventListener('click', function(event) {
+            	notif_id = event.target.id
+            	let xhr = new XMLHttpRequest();
+            	xhr.open('POST', "{% url 'notifications:remove_notification' %}");
+            	xhr.setRequestHeader('X-CSRFToken', '{{csrf_token}}');
+            	xhr.setRequestHeader('Content-Type', 'application/json');
+            	xhr.send(JSON.stringify({notf_pk:notif_id }));
+            	})
+        	} 
+		}
+
+		function xbutton2() {
+            let xhr = new XMLHttpRequest();
+            xhr.open('POST', "{% url 'notifications:remove_notification3' %}");
+            xhr.setRequestHeader('X-CSRFToken', '{{csrf_token}}');
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.send(JSON.stringify({}));
+			xhr.onreadystatechange = () => {
+				if (xhr.readyState != 4) return;
+                if (xhr.status == 200) {
+					const new_notifications = JSON.parse(xhr.responseText)
+					new_notofocation_texts = new_notifications['all_notfs']
+					dropdown3 = document.getElementById('dropdown-menu-3')
+					dropdown3.innerHTML = ''
+					div1 = document.createElement('div')
+					div1.classList.add('dropdown')
+					dropdown3.appendChild(div1)
+					div2 = document.createElement('div')
+					div1.appendChild(div2)
+
+					for (i = 0; i < new_notofocation_texts.length; i++ ) {
+						if(new_notofocation_texts[i].notification_type == 1) {
+							div3 = document.createElement('div')
+							div3.classList.add('dropdown-item-parent')
+							div3.classList.add(new_notofocation_texts[i].id)
+							a1 = document.createElement('a')
+							a1.classList.add('clo')
+							a1.classList.add('notf-text')
+							str1 = new_notofocation_texts[i].post_id.toString()
+							a1.href = '#' + str1
+							a1.innerHTML = new_notofocation_texts[i].sender_name.toString() + ' liked your post'
+							a1.id = new_notofocation_texts[i].id
+							a1.style.textDecoration = "none";
+							div3.appendChild(a1)
+							span1 = document.createElement('span')
+							span1.classList.add('dropdown-item-close')
+							div3.appendChild(span1)
+							i1 = document.createElement('i')
+							i1.id = new_notofocation_texts[i].id
+							i1.classList.add('fas')
+							i1.classList.add('fa-times')
+							i1.classList.add('clo')
+							span1.appendChild(i1)
+							div2.appendChild(div3)
+						}
+
+						else if (new_notofocation_texts[i].notification_type == 2) {
+							div4 = document.createElement('div')
+							div4.classList.add('dropdown-item-parent')
+							div4.classList.add(new_notofocation_texts[i].id)
+							a2 = document.createElement('a')
+							a2.classList.add('clo')
+							a2.classList.add('notf-text')
+							str2 = new_notofocation_texts[i].post_id.toString()
+							a2.href = '#' + str2
+							a2.innerHTML = new_notofocation_texts[i].sender_name.toString() + ' commented to your post'
+							a2.id = new_notofocation_texts[i].id
+							div4.appendChild(a2)
+							span2 = document.createElement('span')
+							span2.classList.add('dropdown-item-close')
+							div4.appendChild(span2)
+							i2 = document.createElement('i')
+							i2.id = new_notofocation_texts[i].id
+							i2.classList.add('fas')
+							i2.classList.add('fa-times')
+							i2.classList.add('clo')
+							span2.appendChild(i2)
+							div2.appendChild(div4)
+						}
+						
+						else {
+							div5 = document.createElement('div')
+							div5.classList.add('dropdown-item-parent')
+							div5.classList.add(new_notofocation_texts[i].id)
+							div6 = document.createElement('div')
+							div5.appendChild(div6)
+							div6.classList.add('row')
+							div6.classList.add('like-comment-notifications')
+							div7 = document.createElement('div')
+							div7.classList.add('col-8')
+							div7.classList.add('fr-req-text')
+							div6.appendChild(div7)
+							a3 = document.createElement('a')
+							div7.appendChild(a3)
+							a3.id = 'notification-link'
+							a3.innerHTML = new_notofocation_texts[i].sender_name.toString() + ' wants to add you as friend'
+							div8 = document.createElement('div')
+							div8.classList.add('col-2')
+							div8.classList.add('p-0')
+							div8.classList.add('accept')
+							div8.id = new_notofocation_texts[i].receiver_id
+							div6.appendChild(div8)
+							button1 = document.createElement('button')
+							div6.appendChild(button1)
+							button1.id = new_notofocation_texts[i].sender_id
+							button1.classList.add('btn')
+							button1.classList.add('btn-success')
+							button1.classList.add('accept-req')
+							i3 = document.createElement('i')
+							i3.classList.add('fas')
+							i3.classList.add('fa-check')
+							i3.id = new_notofocation_texts[i].sender_id
+							button1.appendChild(i3)
+							div8.appendChild(button1)
+							div9 = document.createElement('div')
+							div9.classList.add('col')
+							div9.classList.add('p-0')
+							div9.classList.add('reject')
+							button2 = document.createElement('button')
+							div9.appendChild(button2)
+							div9.id = new_notofocation_texts[i].receiver_id
+							button2.id = new_notofocation_texts[i].sender_id
+							button2.classList.add('btn')
+							button2.classList.add('btn-danger')
+							button2.classList.add('reject-req')
+							i4 = document.createElement('i')
+							i4.classList.add('fas')
+							i4.classList.add('fa-times')
+							i4.classList.add('reject-times')
+							i4.id = new_notofocation_texts[i].sender_id
+							button2.appendChild(i4)
+							div6.appendChild(div9)
+							div2.appendChild(div5)
+						}
+						
+					}
+					acceptbutton()
+					rejectbutton()
+					xbutton()
+				} 
+        	} 
+		}
+
+
+		function xbutton3() {
+            let xhr = new XMLHttpRequest();
+            xhr.open('POST', "{% url 'notifications:remove_notification3' %}");
+            xhr.setRequestHeader('X-CSRFToken', '{{csrf_token}}');
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.send(JSON.stringify({}));
+			xhr.onreadystatechange = () => {
+				if (xhr.readyState != 4) return;
+                if (xhr.status == 200) {
+					const new_notifications = JSON.parse(xhr.responseText)
+					// console.log(new_notifications)
+					// console.log(new_notifications)
+					new_notofocation_texts = new_notifications['all_notfs']
+					dropdown6 = document.getElementById('d-menu')
+					dropdown6.innerHTML = ''
+					div1 = document.createElement('div')
+					div1.classList.add('dropdown')
+					dropdown6.appendChild(div1)
+					div2 = document.createElement('div')
+					div2.classList.add('dropdown-content')
+					div2.id = '"notification-container'
+					div1.appendChild(div2)
+
+					for (i = 0; i < new_notofocation_texts.length; i++ ) {
+						if(new_notofocation_texts[i].notification_type == 4) {
+							console.log(i)
+							div3 = document.createElement('div')
+							div3.classList.add('dropdown-item-parent')
+							div3.classList.add(new_notofocation_texts[i].id)
+							div4 = document.createElement('div')
+							div4.classList.add('row')
+							div4.classList.add('like-comment-notifications')
+							div3.appendChild(div4)
+							div5 = document.createElement('div')
+							div5.classList.add('col-12')
+							div5.classList.add('p-0')
+							div4.appendChild(div5)
+							a4 = document.createElement('a')
+							a4.classList.add('clo')
+							a4.classList.add('sent-you-message')
+							a4.id = new_notofocation_texts[i].id
+							a4.classList.add('text-dec-none')
+							a4.href = '#'
+							// a.style.textDecoration = 'none'
+							a4.innerHTML = new_notofocation_texts[i].sender_name.toString() + ' sent you a message'
+							div5.appendChild(a4)
+							s3 = document.createElement('span')
+							s3.classList.add('dropdown-item-close')
+							div5.appendChild(s3)
+							i5 = document.createElement('i')
+							s3.appendChild(i5)
+							i5.id =  new_notofocation_texts[i].id
+							i5.classList.add('fas')
+							i5.classList.add('fa-times')
+							i5.classList.add('clo')
+							div6 = document.createElement('div')
+							
+							div2.appendChild(div3)
+							dropdown6.appendChild(div1)
+						}						
+					}
+					acceptbutton()
+					rejectbutton()
+					// xbutton()
+				} 
+        	} 
+		}
+
+
+        function count() {
+                let xhr = new XMLHttpRequest();
+                xhr.open('POST', "{% url 'notifications:remove_notification2' %}");
+                xhr.setRequestHeader('X-CSRFToken', '{{csrf_token}}');
+                xhr.setRequestHeader('Content-Type', 'application/json');
+                xhr.send(JSON.stringify({}));
+                xhr.onreadystatechange = () => {
+                if (xhr.readyState != 4) return;
+                if (xhr.status == 200) {
+                    const new_notification_count = JSON.parse(xhr.responseText)
+					if (new_notification_count['notification_count'] != 0) {
+                        document.getElementById('notf-count').innerHTML=new_notification_count['notification_count']
+
+                    }
+					if (new_notification_count['notification_count_m'] != 0) {
+                        document.getElementById('notf-count-2').innerHTML=new_notification_count['notification_count_m']
+                    }
+					if (new_notification_count['notification_count'] == 0) {
+						document.getElementById('notf-count').innerHTML=''
+					}
+
+					if (new_notification_count['notification_count_m'] == 0) {
+						document.getElementById('notf-count-2').innerHTML=''
+					}
+                }  
+                    if (xhr.status == 403) {
+                        document.location.href = "{% url 'authenticate:main_page' %}?next={{ request.get_full_path|urlencode }}"
+                    } 
+                } 
+            }
+
+
+			function acceptbutton() {
+					accept_button = document.getElementsByClassName('accept-req')
+					for (i = 0; i < accept_button.length; i++) {
+					accept_button[i].addEventListener('click', function(event) {
+					receiver_id = accept_button[i].parentElement.id
+					notf_id = accept_button[i].parentElement.parentElement.parentElement.classList[1]
+					if (accept_button[i].id == event.target.id ) {
+						let xhr = new XMLHttpRequest();
+                    	xhr.open('POST', "{% url 'notifications:add_friend' %}");
+                    	xhr.setRequestHeader('X-CSRFToken', '{{csrf_token}}');
+                    	xhr.setRequestHeader('Content-Type', 'application/json');
+						btn = document.getElementById
+                    	xhr.send(JSON.stringify({sender: event.target.id, p_not: notf_id}));
+					}
+				})
+			}
+		}
+
+		function rejectbutton() {
+					reject_button = document.getElementsByClassName('reject-req')
+					for (i = 0; i < reject_button.length; i++) {
+					reject_button[i].addEventListener('click', function(event) {
+					receiver_id = reject_button[i].parentElement.id
+					notf_id = reject_button[i].parentElement.parentElement.parentElement.classList[1]
+					if (reject_button[i].id == event.target.id ) {
+						let xhr = new XMLHttpRequest();
+                    	xhr.open('POST', "{% url 'notifications:reject_friend_request' %}");
+                    	xhr.setRequestHeader('X-CSRFToken', '{{csrf_token}}');
+                    	xhr.setRequestHeader('Content-Type', 'application/json');
+						btn = document.getElementById
+                    	xhr.send(JSON.stringify({p_rec: receiver_id, p_sen: event.target.id, p_not: notf_id}));
+						
+					}
+				})
+			}
+		
+		
+		
+		
+		
+		}
+
+
+
+})   
+</script>
+</body>
+{% block content %}
+{% endblock %}
+</html>

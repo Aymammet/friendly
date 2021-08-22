@@ -1,0 +1,41 @@
+<div class="dropdown">
+    <div class="dropdown-content " id="notification-container">
+        {% for notification in notifications %}
+        <!-- <a href="https://www.google.com/search?q=bmw&rlz=1C1GGRV_enTM963TM963&oq=bmw&aqs=chrome.0.69i59j0i512l9.1312j0j7&sourceid=chrome&ie=UTF-8">ssdsddsd</a> -->
+            {% if notification.post %}
+                {% if notification.notification_type == 1 %}
+                    <div class="dropdown-item-parent {{ notification.pk}}">
+                        <a  class="clo notf-text" id="{{ notification.pk}}"  href="#{{notification.post.pk}}">{{notification.sender}} liked your post</a>
+                        <span class="dropdown-item-close " > <i id="{{ notification.pk}}"  class="fas fa-times clo" ></i> </span style="background-color:;">
+                    </div>
+
+                {% elif notification.notification_type == 2 %}
+                    <div class="dropdown-item-parent {{ notification.pk}}">
+                        <a class="clo notf-text" id="{{ notification.pk}}"  href=#{{notification.post.pk}}>{{notification.sender}} commented on your post</a>
+                        <span class="dropdown-item-close "   ><i id="{{ notification.pk}}"  class="fas fa-times clo"></i></span>
+                    </div>
+                {% endif %}
+
+            {% elif notification.thread %}
+            <div class="dropdown-item-parent {{ notification.pk}}">
+            </div>
+            {% else %}
+            <div class="dropdown-item-parent {{ notification.pk}}">
+                <div class="row like-comment-notifications">
+                    <div class="col-8 fr-req-text" >
+                        <a id="notification-link" href="{% url 'profiles:profile' notification.sender.pk  %}">{{notification.sender}} wants to add you as friend</a>
+                    </div>
+                    <div id="{{notification.receiver.pk}}" class="col-2 p-0 accept">
+                        <button id="{{notification.sender.pk}}" class="btn btn-success accept-req"><i id="{{notification.sender.pk}}" class="fas fa-check"></i></button>
+                    </div>
+                    <div id="{{notification.receiver.pk}}" class="col-2 p-0 reject">
+                        <button id="{{notification.sender.pk}}" class="btn btn-danger reject-req"><i id="{{notification.sender.pk}}" class="fas fa-times reject-times"></i></button>
+                    </div>  
+                </div>
+            </div>
+            
+            {% endif %}
+        {% endfor %}
+    </div>
+</div >
+

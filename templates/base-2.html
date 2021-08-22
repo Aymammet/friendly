@@ -1,0 +1,24 @@
+{% load static %}
+<!DOCTYPE html>
+<head>
+    <!-- <title>Main Page</title> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="{% static 'logo.svg' %}">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="{% static 'css/base_style.css' %}">
+    <!-- <script src="{% static 'scripts/script.js' %}"></script> -->
+
+</head>
+
+<body>
+    <div id="upper">
+        <div id="upper-left">Friendly</div>
+        <div id="upper-center"> </div>
+        <div id="upper-right"> </div>
+    </div>
+        {% block content %}
+        {% endblock %}
+</body>
+</html>

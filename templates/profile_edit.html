@@ -1,0 +1,192 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_tags %}
+{% block extra_header %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"/>
+    <title>Edit | {{user.username}}</title>
+    <link rel="stylesheet"  href=" {% static 'css/profile_edit_style.css' %}" type="text/css" />
+{% endblock %}
+
+{% block content %}
+<header>
+</header>
+<main>
+    <div class="container">
+        <div  class="col mx-auto" id="main-column">
+          <div class="col-12 each-column">
+            <form class="form" role="form" method="POST" enctype="multipart/form-data">
+              {% csrf_token %}
+              <div class="form-group">
+                <div class="col-lg-12">
+                  <div class="col-md-12" style="display: flex; justify-content: center;">
+                    <div class="text-center form-group" style="width: 300px; height: 300px;">
+                      <img src="{{user.get_profile_image}}" class="rounded-circle" alt="avatar" id="edited_image" style="border-radius: 10px;" width="100%"; height="100%">
+                    </div>
+                  </div>
+                  <div> {{form.image}} </div>
+                </div>
+              </div>
+    
+              <div class="form-group">
+                <label class="col-lg-6 control-label ">First name:</label>
+                <div class="col-lg-12">
+                  <input class="form-control" name="name" type="text" {% if user.name %} value="{{user.name}}" {% endif %}>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-lg-6 control-label ">Username:</label>
+                <div class="col-lg-12">
+                  <input class="form-control" name="username" type="text" {% if user.username %} value="{{user.username}}" {% endif %}>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-lg-6 control-label">Last name: </label>
+                <div class="col-lg-12">
+                  <input class="form-control" name="surname" type="text" {% if user.surname %} value="{{user.surname}}" {% endif %}>
+                </div>
+              </div>
+          
+              <div class="form-group">
+                <label class="col-lg-6 control-label">Email:</label>
+                <div class="col-lg-12">
+                  <input class="form-control" type="text" value="{{user.email}}" disabled>
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label class="col-md-6 control-label">Bio:</label>
+                <div class="col-md-12">
+                  <textarea class="form-control" name="bio" type="text" value="{{user.bio}}" ></textarea>
+                </div>
+              </div>
+             
+              <div class="form-group">
+                <label class="col-md-6 control-label">Birth Date:</label>
+                <div class="col-md-12">
+                  <input class="form-control" name="birth_date" type="date" {% if user.birth_date %} value="{{user.birth_date}}" {% endif %}>
+                </div>
+              </div>
+            
+              <div class="form-group">
+                <label class="col-md-6 control-label"></label>
+                <div class="col-md-12" style="display: flex; justify-content: center;">
+                  <input type="submit" style="margin: 10px;" class="btn btn-primary" value="Save">
+                  <span></span>
+                  <a href="{% url 'profiles:profile' user.pk %}">
+                    <button type="button" style="margin: 10px;" class="btn btn-danger" value="Cancel"  onclick = "cancel()">Cancel</button>
+                  </a>
+                  
+                </div>
+              </div>
+    
+            </form>
+          </div>
+        </div>
+    </div>
+</main>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    function cancel () {
+    document.execCommand('Stop')
+}
+
+
+      document.getElementById('id_image').addEventListener('change', (event) => {
+        console.log(2)
+        surat = document.getElementById('id_image')
+        var src = URL.createObjectURL(event.target.files[0])
+        document.getElementById('edited_image').src = src
+      })    
+  });
+</script>
+
+
+{% endblock %}
+
+<body>
+  <div class="container">
+    <h1 style="text-align: center;">Edit Profile</h1>
+  	<hr>
+	<div class="row" style="display: flex; justify-content: center;">
+      <!-- left column -->
+     
+
+
+      
+      
+      <!-- edit form column -->
+      <div class="col-md-12 personal-info" style="display: flex; justify-content: center;">
+        <form class="form" role="form" method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="form-group">
+            <div class="col-lg-12">
+              <div class="col-md-12" style="display: flex; justify-content: center;">
+                <div class="text-center form-group" style="width: 300px; height: 300px;">
+                  <img src="{{user.get_profile_image}}" class="avatar img-circle" alt="avatar" id="edited_image" style="border-radius: 10px;" width="100%"; height="100%">
+                </div>
+              </div>
+              <div> {{form.image}} </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-lg-6 control-label ">First name:</label>
+            <div class="col-lg-12">
+              <input class="form-control" name="name" type="text" {% if user.name %} value="{{user.name}}" {% endif %}>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-lg-6 control-label">Last name: </label>
+            <div class="col-lg-12">
+              <input class="form-control" name="surname" type="text" {% if user.surname %} value="{{user.surname}}" {% endif %}>
+            </div>
+          </div>
+      
+          <div class="form-group">
+            <label class="col-lg-6 control-label">Email:</label>
+            <div class="col-lg-12">
+              <input class="form-control" type="text" value="{{user.email}}" disabled>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label class="col-md-6 control-label">Bio:</label>
+            <div class="col-md-12">
+              <input class="form-control" name="bio" type="text" {% if user.bio %} value="{{user.bio}}" {% endif %}>
+            </div>
+          </div>
+         
+          <div class="form-group">
+            <label class="col-md-6 control-label">Birth Date:</label>
+            <div class="col-md-12">
+              <input class="form-control" name="birth_date" type="date" {% if user.birth_date %} value="{{user.birth_date}}" {% endif %}>
+            </div>
+          </div>
+        
+          <div class="form-group">
+            <label class="col-md-6 control-label"></label>
+            <div class="col-md-12" style="display: flex; justify-content: center;">
+              <input type="submit" style="margin: 10px;" class="btn btn-primary" value="Save">
+              <span></span>
+              <input type="reset" style="margin: 10px;" class="btn btn-danger" value="Cancel">
+            </div>
+          </div>
+
+        </form>
+      </div>
+  </div>
+</div>
+<hr>
+
+</body>
+
+{}
+
+
+
+
+
+

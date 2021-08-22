@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block extra_header %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"/>
+    <title>Edit Your Post | {{current.description}}</title>
+    <link rel="stylesheet"  href=" {% static 'css/edit_style.css' %}" type="text/css" />
+{% endblock %}
+
+{% block content %}
+<header>
+</header>
+<main>
+
+  <body>
+      <div class="main">
+        <div class="main-center">
+            
+            <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+                <div class="main-center-elements">
+                    <div class="main-center-elements-up">
+                        <div style="color: rgb(136, 136, 136);">
+                            {{current.created_date}}
+                        </div>
+                        
+                    </div>
+
+                    <div class="main-center-elements-md">
+                        <div class="middle-left"></div>
+                        <div class="middle-right">
+                            <input class="edit_description"  name="description" value="{{form.description.value}}">
+                            {% if current.image %}
+                            <img id="edited_image" src={{current.image.url}}>  
+                            {% endif %}
+                        </div>   
+                    </div >
+               
+
+                    <div style="display: flex; justify-content: center; align-items: center;">
+                        <a>
+                            <button  class="btn btn-primary" type="submit"> Update Post </button>
+                        </a>
+                        
+                        <a href="{% url 'post:delete_post' current.pk %}"  class="btn btn-success" style="width: 114px; margin: 15px;">
+                            Delete
+                        </a>
+                        <a href="{% url 'post:home' %}"  class="btn btn-danger" style="width: 114px; margin: 15px;">
+                            Cancel
+                        </a>
+                    </div>
+                  
+                </div>
+            </form>        
+        </div>
+    </div>
+</body>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        console.log(2)
+        document.getElementById('id_image').addEventListener('change', (event) => {
+          surat = document.getElementById('id_image')
+          var src = URL.createObjectURL(event.target.files[0])
+          document.getElementById('edited_image').src = src
+        })    
+    });
+  </script>
+
+  {% endblock %}

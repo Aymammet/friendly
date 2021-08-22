@@ -1,0 +1,166 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_tags %}
+{% block extra_header %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"/>
+    <title>Inbox</title>
+    <link rel="stylesheet"  href=" {% static 'css/inbox_style.css' %}" type="text/css" />
+{% endblock %}
+
+{% block content %}
+<header>
+</header>
+<main>
+    <div class="container">
+        <div class="col mx-auto" id="main-column">
+            <div class="col-10 each-column p-0 ">
+                <div  style="display: flex; justify-content: center;"  class="col-12">
+                    <div  class="col-4 p-0">
+                        <div class="search-part" class="col-12">
+                            
+                           
+                        </div>
+
+                        <div  class="col-12 thread-body">
+                            {% for friend in friends %}
+                            <div >
+                                <div class="card  shadow-sm threads" >  
+                                    <a class="open-threads"  href="?friend={{friend.username}}"  >
+                                        {{friend}}             
+                                    </a>
+                                </div >
+                            </div>
+                        {% endfor %}
+                        </div>
+                    </div>
+                    <div  class="col-8 p-0">
+                        <div  class=" col-md-12 p-1 shadow-sm thread-name" id="thread-name"  >
+                            <div style=" display: flex; justify-content: center; align-items: center;">
+                                <img id="image_of" class="avatar avatar-xs-64 avatar-sm-64 avatar-md-64 avatar-lg-64 avatar-xl-64 avatar-xxl-128 bg-light rounded-circle text-white" >
+                            </div>
+                            <div style="margin-left: 10px;">
+                                <span id="name"> </span>
+                                <span id=surname> </span>
+                                <div style="color: gray;" id=username-2> </div>
+                            </div>
+                        </div >
+                        
+                        <div class="message-body">
+                            <div class="row">
+                                <div class="col-md-12 ">
+                                    <div></div>
+                                </div>
+                            </div >
+                        </div >
+                       
+                        <div class="row">
+                            <div class="col-md-12 p-3 shadow-sm" >
+                                <div style="display: flex; justify-content: center; margin:5px; align-items: baseline;">    
+                                    <input id="{{user.id}}" class="input-message" name="message"> 
+                                        <div class="d-grid gap-2 mt-3">
+                                            <button id=# class="btn btn-info send-mess" type="submit">
+                                            Send
+                                            </button>
+                                        </div>
+                                </div>
+                            </div >
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<script>
+     function sleep(ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+    document.getElementById('thread-name').style.position = 'none'
+    const params = new URLSearchParams(window.location.search)
+    send_button = document.getElementsByClassName('send-mess');
+    sent_message = document.getElementsByClassName('input-message')
+    active_user = sent_message[0].id
+    sent_message[0].addEventListener('keyup', function(event){
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            send_button[0].click()
+        }
+    })
+    
+    send_button[0].addEventListener('click', async function(event){
+
+    let xhr = new XMLHttpRequest();
+    xhr.open('POST', "{% url 'profiles:messages' %}");
+    xhr.setRequestHeader('X-CSRFToken', '{{csrf_token}}');
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.send(JSON.stringify({friend:params.getAll('friend')[0], message:sent_message[0].value }));
+    // here
+    await sleep(800);
+    document.getElementsByClassName('message-body')[0].lastChild.scrollIntoView() 
+    sent_message[0].value = ''
+        })
+    
+    function check() {
+        let xhr = new XMLHttpRequest();
+        xhr.open('POST', "{% url 'profiles:get_messages' %}");
+        xhr.setRequestHeader('X-CSRFToken', '{{csrf_token}}');
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.send(JSON.stringify({friend:params.getAll('friend')[0]}));
+        xhr.onreadystatechange = () => {
+        if (xhr.readyState != 4) return;
+        if (xhr.status == 200) {
+            const data = JSON.parse(xhr.responseText)
+            all_messages = data['messages']
+            document.getElementById('image_of').src = data['image']
+            document.getElementById('username-2').innerHTML= '@' + data['username']
+            document.getElementById('name').innerHTML= data['name']
+            document.getElementById('surname').innerHTML= data['surname']
+            message_body = document.getElementsByClassName('message-body')
+            message_body[0].innerHTML = ''
+            for (i =0; i <all_messages.length; i++ ){
+                div1 = document.createElement("div");
+                div1.classList.add("row")
+                div2 = document.createElement("div");
+                div2.classList.add("col-md-12")
+                div1.appendChild(div2)
+                div3 = document.createElement("div");
+                if (active_user != all_messages[i].user_id) {
+                    div3.classList.add("receiver")
+                    div2.appendChild(div3)
+                    div3.innerHTML = all_messages[i].message
+                    }
+                    if (active_user == all_messages[i].user_id) {
+                        div3.classList.add("sender")
+                        div2.appendChild(div3)
+                        div3.innerHTML = all_messages[i].message
+                    }
+                    message_body[0].appendChild(div1)
+                    
+                }
+            }
+        }
+            if (xhr.status == 403) {
+                document.location.href = "{% url 'authenticate:main_page' %}?next={{ request.get_full_path|urlencode }}"
+            }
+            
+            
+        }
+
+        
+        if (params.getAll('friend')[0]) {
+            setInterval(check, 500);
+        }
+        
+        
+        thread_user = document.getElementById('thread_user')
+        thread_receiver = document.getElementById('thread_receiver')
+        params.getAll('friend')[0]
+        open_threads = document.getElementsByClassName('threads')
+        for (i = 0; i < open_threads.length; i++) {
+            if (open_threads[i].innerText == params.getAll('friend')[0] ) {
+                open_threads[i].style.color = 'white'
+                open_threads[i].style.backgroundColor = '#1266F1'
+                }
+            }
+</script>
+</main>
+{% endblock content %}
