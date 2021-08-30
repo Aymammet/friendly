@@ -80,7 +80,7 @@ class CustomRegisterView(CreateView):
                 form.add_error("email", _("User with this email already exists!"))
             if user is not None:
                 login(request, user)
-                return redirect('main_page')
+                return redirect('authenticate:main_page')
             else:
                 return render(request, self.template_name, {'form': form})
         return render(request, self.template_name, {'form': form, 'title': _('Become a member')})

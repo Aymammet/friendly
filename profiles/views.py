@@ -1,16 +1,14 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import User, Thread, MessageModel
+from .models import User
 from post.models import Post
 from notifications.models import Notification 
 from django.views.generic import View, UpdateView
-from .form import UpdateProfileForm, ThreadForm, MessageForm
 from django.urls import reverse_lazy
 import json
 from django.http import JsonResponse
 from django.db.models import Q
-from django.contrib import messages
-from dm.models import Room, Message
-from django.utils import timezone
+from dm.models import Room
+from .form import UpdateProfileForm 
 
 
 class ProfileView(View):
@@ -19,22 +17,16 @@ class ProfileView(View):
         username = profile.username
         posts = Post.objects.filter(owner_of_post=profile.id).order_by('-created_date')
         posts_all =  Post.objects.all()
-        
-       
-
         is_friend = False        
         if self.request.user in profile.friends.all():
             is_friend = True
-                
         context = {
             'user2' : username,
             'profile' : profile,
             'posts' : posts,
             'number_of_friends' : profile.friends.count(),
             'is_friend' : is_friend,
-            
         }
-       
         return render(request, 'profile.html', context)
 
 class ProfileEditView(UpdateView):
@@ -51,14 +43,40 @@ class ProfileEditView(UpdateView):
         profile = self.get_object()
         return self.request.user == profile.user
 
+
+class UserSearchView(View):
+    def get(self, request, *args, **kwargs):
+        query = self.request.GET.get('query')
+        if query == '':
+             return render(request, 'friends.html')
+        else:
+            profile_list = User.objects.filter(
+                Q(username__startswith=query)
+            )
+            context = {
+                'profile_list' : profile_list
+             }
+        return render(request, 'friends.html', context)
+
+
+class AllFriendsView(View):
+    template_name = 'all_friends.html'
+    def get(self, request):
+        return render(request, self.template_name)
+
+
+class SendFriendRequest(View):
+    def post(self, request, pk,  *args, **kwargs):
+        add_friend = get_object_or_404(User, pk=pk)
+        Notification.objects.create(notification_type=3, sender=request.user, receiver=add_friend)
+        return redirect('profiles:profile', pk=pk)
+
 def create_room(user1_id, user2_id):
     users = sorted([user1_id, user2_id])
     return int('0'.join([str(users[0]), str(users[1])]))
 
 
-
-class JSONAddFriendView(View):
-
+class AcceptFriendRequest(View):
     def post(self, request):
         body = json.loads(request.body)
         user = request.user
@@ -71,68 +89,30 @@ class JSONAddFriendView(View):
         return JsonResponse({})
 
 
-class RemoveFriendsView(View):
-    def post(self, request):
-        profile = User.objects.get(pk=request.user.pk)
-        profile.friends.remove(request.user.pk)
-        return redirect('profiles:profile', pk=profile.pk)
+class CancelRequestAddFriendView(View):
+    def post(self, request, pk,  *args, **kwargs):
+        friend = get_object_or_404(User, pk=pk)
+        # user = User.objects.get(pk=self.request.user.pk)
+        Notification.objects.filter(notification_type=3, sender=request.user, receiver=friend)
+        return redirect('profiles:profile', pk=pk)
 
 
-class SendRequest(View):
-    def post(self, request, pk):
-        profile = User.objects.get(pk=pk)
-        Notification.objects.create(notification_type=3, sender=request.user, receiver=profile)
-        return redirect('profiles:profile', pk=profile.pk)
+class RemoveFriendView(View):
+    def post(self, request, pk,  *args, **kwargs):
+        removed_friend = get_object_or_404(User, pk=pk)
+        user = User.objects.get(pk=self.request.user.pk)
+        user.friends.remove(removed_friend)
+        removed_friend.friends.remove(user)
+        return redirect('profiles:all_friends')
 
-class Inbox(View):
-    def get(self, request, *args, **kwargs):
-        user  = self.request.user
-        context = {
-            'friends' : user.friends.all() 
-            }
-        # kwargs.get('friend').exists():
-        return render(request, 'inbox.html', context)
 
-    
-class JsonMessages(View):
+class RejectFriendRequest(View):
     def post(self, request):
         body = json.loads(request.body)
-        friend = get_object_or_404(User, username=body['friend'])
-        new_message = body['message']
-        room_id = create_room(friend.pk, request.user.pk)
-        room = get_object_or_404(Room, room_id=room_id)
-        message = Message.objects.filter(room=room)
-        if new_message != '':
-            Message.objects.filter(room=room).create(message=new_message, room=room, user=self.request.user)
-            notification = Notification.objects.create(
-            notification_type=4,
-            sender = request.user,
-            receiver = friend,
-            room = room
-            )
-
-        return JsonResponse({'messages':list(message.values())})
-
-
-
-class JsonMessages_get(View):
-    def post(self, request):
-        body = json.loads(request.body)
-        
-        friend = get_object_or_404(User, username=body['friend'])
-        if friend.image:
-            im = friend.image.url
-        else:
-            im = '../../static/images/default_image.jpg'
-        room_id = create_room(friend.pk, request.user.pk)
-        room = get_object_or_404(Room, room_id=room_id)
-        message = Message.objects.filter(room=room)
-
-        return JsonResponse({'messages':list(message.values()), 'image':im, 'username':friend.username, 'name':friend.name, 'surname':friend.surname})
-
-
-
-
+        p_not = body['p_not']
+        notification = Notification.objects.get(pk=p_not)
+        notification.remove_notification()
+        return JsonResponse({})
 
 
 

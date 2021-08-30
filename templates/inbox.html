@@ -89,7 +89,7 @@
     send_button[0].addEventListener('click', async function(event){
 
     let xhr = new XMLHttpRequest();
-    xhr.open('POST', "{% url 'profiles:messages' %}");
+    xhr.open('POST', "{% url 'dm:messages' %}");
     xhr.setRequestHeader('X-CSRFToken', '{{csrf_token}}');
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.send(JSON.stringify({friend:params.getAll('friend')[0], message:sent_message[0].value }));
@@ -101,7 +101,7 @@
     
     function check() {
         let xhr = new XMLHttpRequest();
-        xhr.open('POST', "{% url 'profiles:get_messages' %}");
+        xhr.open('POST', "{% url 'dm:get_messages' %}");
         xhr.setRequestHeader('X-CSRFToken', '{{csrf_token}}');
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.send(JSON.stringify({friend:params.getAll('friend')[0]}));

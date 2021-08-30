@@ -51,12 +51,12 @@
               </form >
               {% else %}
               {% if profile in user.friends.all %}
-              <form style="width: 100%;" method="POST" action="{% url 'notifications:remove_friend' profile.pk %}">
+              <form style="width: 100%;" method="POST" action="{% url 'profiles:remove_friend' profile.pk %}">
                 {% csrf_token %}
                 <button  style="width: 100%;" class="btn btn-outline-danger" type="submit">Remove from friends</button>
               </form >
               {% else %}
-              <form method="POST" action="{% url 'notifications:send_request' profile.pk  %}">
+              <form method="POST" action="{% url 'profiles:send_request' profile.pk  %}">
                 {% csrf_token %}
                 <button style="width: 100%;" class="btn btn-outline-success" type="submit">Add as friend</button>
               </form >
@@ -67,10 +67,10 @@
               {% if user.username == profile.username %}
               {% else %}
               {% if profile in user.friends.all %}
-              <form style="width: 100%;" method="POST" action="{% url 'profiles:inbox' %}">
-                {% csrf_token %}
+              <a style="width: 100%;" method="POST" href="{% url 'dm:inbox' %}">
+                
                 <button  style="width: 100%;" class="btn btn-outline-primary" type="submit">Send Message</button>
-              </form >
+              </a >
               {% endif %}
               {% endif %}
             </div>

@@ -40,11 +40,11 @@
 			</div>
 
 			<div class="nav-item dropdown">
-				<a aria-label="search" href="{% url 'notifications:friends' %}" class="nav-link " data-toggle="dropdown">
+				<a aria-label="search" href="{% url 'profiles:all_friends' %}" class="nav-link " data-toggle="dropdown">
 					<i class="fas fa-search menu-items" ></i>
 				</a>
 				<div  class="dropdown-menu m-0 p-0" id="dropdown-menu-4">
-					<form  method="GET"  action="{% url 'notifications:user_search' %}" class="navbar-form form-inline m-0 p-0">
+					<form  method="GET"  action="{% url 'profiles:user_search' %}" class="navbar-form form-inline m-0 p-0">
 						<div  class="input-group search-box m-0 p-0" >								
 							<input style="font-style: italic;" type="text" id="search" name="query" value="{{ request.GET.query }}" class="form-control" placeholder="Search for users...">
 							<span class="input-group-addon"><i class="material-icons">&#xE8B6;</i></span>
@@ -54,20 +54,10 @@
 			</div>
 
 			<div class="navbar-nav ml-auto">
-				<a aria-label="Friends" href="{% url 'notifications:all_friends' %}" class="nav-link " >
+				<a aria-label="Friends" href="{% url 'profiles:all_friends' %}" class="nav-link " >
 					<i class="fas fa-users  menu-items"></i>
 				</a>
-				<!-- <div class="dropdown-menu">
-                    {% for friend in user.friends.all %}
-					<a href="#" class="dropdown-item">
-						<a href="{% url 'profiles:profile' friend.pk %}" class="nav-link user-action">
-							<img class="avatar avatar-xs-16 avatar-sm-32 avatar-md-32 rounded-circle text-white" src={{friend.get_profile_image}}>{{friend.name}}
-						</a>
-					</a>
-                    {% endfor %}
-					<div class="dropdown-divider"></div>
-					<a href="{% url 'notifications:friends' %}" class="dropdown-item">All Friends </a>
-				</div> -->
+				
 			</div>
 
 			<!-- <div >
@@ -102,7 +92,7 @@
 						</div>
 						
 						<div class="col-12" style="display: flex; justify-content: center;">
-							<a href="{% url 'profiles:inbox' %}" title="Messages" style="width: 100%; text-decoration: none; text-align: center;">- All Messages -
+							<a href="{% url 'dm:inbox' %}" title="Messages" style="width: 100%; text-decoration: none; text-align: center;">- All Messages -
 							</a>
 						</div>
                     </div>
@@ -118,7 +108,7 @@
 						{% endif %}
 					
 						<div class="col-12" style="display: flex; justify-content: center;">
-							<a href="{% url 'profiles:inbox' %}" title="Messages" style="width: 100%; text-decoration: none; text-align: center;">All Messages
+							<a href="{% url 'dm:inbox' %}" title="Messages" style="width: 100%; text-decoration: none; text-align: center;">All Messages
 							</a>
 						</div>
 						
@@ -310,8 +300,6 @@
 				if (xhr.readyState != 4) return;
                 if (xhr.status == 200) {
 					const new_notifications = JSON.parse(xhr.responseText)
-					// console.log(new_notifications)
-					// console.log(new_notifications)
 					new_notofocation_texts = new_notifications['all_notfs']
 					dropdown6 = document.getElementById('d-menu')
 					dropdown6.innerHTML = ''
@@ -405,11 +393,12 @@
 					accept_button = document.getElementsByClassName('accept-req')
 					for (i = 0; i < accept_button.length; i++) {
 					accept_button[i].addEventListener('click', function(event) {
+					console.log(accept_button)
 					receiver_id = accept_button[i].parentElement.id
 					notf_id = accept_button[i].parentElement.parentElement.parentElement.classList[1]
 					if (accept_button[i].id == event.target.id ) {
 						let xhr = new XMLHttpRequest();
-                    	xhr.open('POST', "{% url 'notifications:add_friend' %}");
+                    	xhr.open('POST', "{% url 'profiles:add_friend' %}");
                     	xhr.setRequestHeader('X-CSRFToken', '{{csrf_token}}');
                     	xhr.setRequestHeader('Content-Type', 'application/json');
 						btn = document.getElementById
@@ -427,7 +416,7 @@
 					notf_id = reject_button[i].parentElement.parentElement.parentElement.classList[1]
 					if (reject_button[i].id == event.target.id ) {
 						let xhr = new XMLHttpRequest();
-                    	xhr.open('POST', "{% url 'notifications:reject_friend_request' %}");
+                    	xhr.open('POST', "{% url 'profiles:reject_friend_request' %}");
                     	xhr.setRequestHeader('X-CSRFToken', '{{csrf_token}}');
                     	xhr.setRequestHeader('Content-Type', 'application/json');
 						btn = document.getElementById

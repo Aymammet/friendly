@@ -2,7 +2,6 @@ from django.db import models
 from django.conf import settings
 from django.utils import timezone
 from post.models import Post, Comments
-from profiles.models import User, Thread
 from dm.models import Room
 
 
@@ -18,6 +17,7 @@ class Notification(models.Model):
         user_has_seen = models.BooleanField(default=False)
 
         # 1 - like, 2-Comment, 3-Follow,  4-Direct Message
+      
 
         def remove_notification(self):
                 self.delete()

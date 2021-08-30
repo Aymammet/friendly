@@ -1,19 +1,14 @@
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
-from django.views.generic import RedirectView, CreateView, ListView, DetailView, DeleteView, UpdateView, View
+from django.views.generic import CreateView, ListView, DetailView, DeleteView, UpdateView, View
 from .models import Post, Comments
 from profiles.models import User
 from notifications.models import Notification
-from authenticate import urls
 from .forms import CreatePostForm, CommentForm
 from django.utils import timezone
-from django.shortcuts import render, redirect
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
-from django.views.generic.edit import FormMixin
+from django.http import JsonResponse
 import json
-from django.core.exceptions import ValidationError
 from django.contrib import messages
-from django.core.serializers import serialize
 from operator import attrgetter
 from itertools import chain
 
@@ -22,7 +17,6 @@ class CustomListView(ListView):
     template_name = 'home.html'
     model = Post
     context_object_name = 'posts'
-    
     
     def get_queryset(self):
         if not self.request.user.is_authenticated:
@@ -48,7 +42,7 @@ class CustomCreateView(CreateView):
     template_name = 'new_post.html'
     model =  Post
     success_url = reverse_lazy('post:home')
-    error_message = 'Please post sth or add image'
+    error_message = 'Please post something or add image'
     
     def form_valid(self, form):
         myobj = form.save(commit=False)
@@ -57,8 +51,7 @@ class CustomCreateView(CreateView):
         if not myobj.description and not myobj.image:
             messages.error(self.request, self.error_message)
             return redirect('post:new_post')
-        myobj.save()
-        return redirect('post:home')
+        return super().form_valid(form)
 
 
 class CustomUpdateView(UpdateView):

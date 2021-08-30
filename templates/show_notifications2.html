@@ -6,7 +6,7 @@
             <div class="dropdown-item-parent {{ notification.pk}}">
                 <div class="row like-comment-notifications">
                     <div class="col-12 p-0">
-                        <a class="clo sent-you-message" id="{{ notification.pk}}"  href="{% url 'profiles:inbox'  %}">{{notification.sender}} sent you a message</a>
+                        <a class="clo sent-you-message" id="{{ notification.pk}}"  href="{% url 'dm:inbox'  %}">{{notification.sender}} sent you a message</a>
                         <span class="dropdown-item-close "   ><i id="{{ notification.pk}}"  class="fas fa-times clo" ></i></span>
                     </div>
                 </div>

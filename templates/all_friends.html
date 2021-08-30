@@ -25,12 +25,12 @@
           </a>
           <div class="col-4 p-0" style="display: flex; justify-content: space-between;">
             <div class="col">
-              <a class="friends-add" href="{% url 'profiles:inbox'  %}" style="text-decoration: none;">
+              <a class="friends-add" href="{% url 'dm:inbox'  %}" style="text-decoration: none;">
                 <i class="fas fa-envelope fa-1x" style=" font-size: 18px; color: #1266F1;"  ></i>
               </a> 
             </div>
             <div class="col">
-              <form method="POST" action="{% url 'notifications:remove_friend' friend.pk %}">
+              <form method="POST" action="{% url 'profiles:remove_friend' friend.pk %}">
                 {% csrf_token %}
                 <button type="submit" style="border: none; background: none;" >
                   <i class="fas fa-user-times" style=" font-size: 18px; color: #1266F1;"></i>
