@@ -85,11 +85,14 @@ WSGI_APPLICATION = 'iface.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'dejjkrqkobu2ev',
+        'USER': 'mtcwlxtpmrhawq',
+        'PASSWORD': 'fe326c4c0870cad1d68be16ef6c64ba43fb22818a90333a091e57fab1cd6e5be',
+        'HOST': 'ec2-107-20-24-247.compute-1.amazonaws.com',
+        'PORT': '5432'
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
