@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'dm',
     'authenticate',
     'notifications',
+    'sorages',
     
 
 ]
@@ -153,3 +154,31 @@ LOGIN_REDIRECT_URL = 'post:home'
 LOGOUT_REDIRECT_URL = 'authenticate:main_page'
 
 SESSION_COOKIE_AGE = 60 * 60 * 24  # 1 day (timedelta)
+
+
+AWS_ACCESS_KEY_ID = 'AKIAVR3NWZXG4JFXYTER'
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_STORAGE_BUCKET_NAME = 'friendlywebapp'
+
+AWS_S3_FILE_OVERWRITE = False
+AWS_S3_DEFAULT_ACL = None
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+# AWS_S3_CALLING_FORMAT = 'boto.s3.connection.VHostCallingFormat'
+# AWS_S3_REGION_NAME = os.getenv('AWS_S3_REGION_NAME')
+# AWS_S3_CUSTOM_DOMAIN = AWS_STORAGE_BUCKET_NAME
+
+# STATICFILES_STORAGE = 'makalam.storage_backends.StaticStorage'
+
+
+# <?xml version="1.0" encoding="UTF-8"?>
+# <CORSConfiguration xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
+# <CORSRule>
+#     <AllowedOrigin>*</AllowedOrigin>
+#     <AllowedMethod>GET</AllowedMethod>
+#     <AllowedMethod>POST</AllowedMethod>
+#     <AllowedMethod>PUT</AllowedMethod>
+#     <AllowedHeader>*</AllowedHeader>
+# </CORSRule>
+# </CORSConfiguration>
