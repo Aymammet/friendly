@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'dm',
     'authenticate',
     'notifications',
-    'sorages',
+    'storages',
     
 
 ]
