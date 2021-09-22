@@ -12,9 +12,7 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-import cloudinary
-import cloudinary.uploader
-import cloudinary.api
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
@@ -25,7 +23,7 @@ SECRET_KEY = 'django-insecure-rxir4y$=!-d3yy&ho220tgn8ek2f8aqcm1=mf*9p3t6m1el5z@
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'friendlywebapp.herokuapp.com']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 
 # Application definition
@@ -42,14 +40,11 @@ INSTALLED_APPS = [
     'dm',
     'authenticate',
     'notifications',
-    'storages',
-    
-
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+    # 'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -86,12 +81,8 @@ WSGI_APPLICATION = 'iface.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'dejjkrqkobu2ev',
-        'USER': 'mtcwlxtpmrhawq',
-        'PASSWORD': 'fe326c4c0870cad1d68be16ef6c64ba43fb22818a90333a091e57fab1cd6e5be',
-        'HOST': 'ec2-107-20-24-247.compute-1.amazonaws.com',
-        'PORT': '5432'
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': BASE_DIR / 'db,sqlite3',
     }
 }
 
@@ -119,7 +110,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Ashgabat'
 
 USE_I18N = True
 
@@ -131,18 +122,14 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-# STATIC_URL = '/static/'
-# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/static/"
-MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/media/"
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+MEDIA_URL = "/media/"
 MEDIA_ROOT =  os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '/media/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static' )] 
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 ACCOUNT_EMAIL_REQUIRED = True
-
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 
@@ -160,36 +147,3 @@ LOGOUT_REDIRECT_URL = 'authenticate:main_page'
 SESSION_COOKIE_AGE = 60 * 60 * 24  # 1 day (timedelta)
 
 
-# AWS_ACCESS_KEY_ID = 'AKIAVR3NWZXG4JFXYTER'
-# AWS_SECRET_ACCESS_KEY = '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'
-# AWS_STORAGE_BUCKET_NAME = 'friendlywebapp'
-
-# AWS_S3_FILE_OVERWRITE = False
-# AWS_S3_DEFAULT_ACL = None
-# DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-# STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-
-# AWS_S3_CALLING_FORMAT = 'boto.s3.connection.VHostCallingFormat'
-# AWS_S3_REGION_NAME = os.getenv('AWS_S3_REGION_NAME')
-# AWS_S3_CUSTOM_DOMAIN = AWS_STORAGE_BUCKET_NAME
-
-# STATICFILES_STORAGE = 'makalam.storage_backends.StaticStorage'
-
-
-# <?xml version="1.0" encoding="UTF-8"?>
-# <CORSConfiguration xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
-# <CORSRule>
-#     <AllowedOrigin>*</AllowedOrigin>
-#     <AllowedMethod>GET</AllowedMethod>
-#     <AllowedMethod>POST</AllowedMethod>
-#     <AllowedMethod>PUT</AllowedMethod>
-#     <AllowedHeader>*</AllowedHeader>
-# </CORSRule>
-# </CORSConfiguration>
-
-cloudinary.config( 
-  cloud_name = "aymammet", 
-  api_key = "841731793162857", 
-  api_secret = "OEXUTl8PnG-nxlDdUksM4lh31fc",
-  secure = true
-)
