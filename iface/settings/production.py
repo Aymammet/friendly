@@ -36,9 +36,9 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 # Cloudinary configs
 CLOUDINARY_STORAGE = {
-    "CLOUD_NAME": 'aymammet' 
-    "API_KEY": '841731793162857', 
-    "API_SECRET": 'OEXUTl8PnG-nxlDdUksM4lh31fc',
+    "CLOUD_NAME": "aymammet", 
+    "API_KEY" : "841731793162857", 
+    "API_SECRET": "OEXUTl8PnG-nxlDdUksM4lh31fc",
 }
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
