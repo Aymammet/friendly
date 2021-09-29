@@ -4,7 +4,7 @@ from .base import *
 
 SECRET_KEY = os.getenv('SECRET_KEY')
 
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ["friendlywebapp.herokuapp.com"]
 
@@ -36,9 +36,9 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 # Cloudinary configs
 CLOUDINARY_STORAGE = {
-    "CLOUD_NAME": "aymammet", 
-    "API_KEY" : "841731793162857", 
-    "API_SECRET": "OEXUTl8PnG-nxlDdUksM4lh31fc",
+    "CLOUD_NAME": os.getenv('CLOUD_NAME'), 
+    "API_KEY" : os.getenv('API_KEY'), 
+    "API_SECRET": os.getenv('API_SECRET'),
 }
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
