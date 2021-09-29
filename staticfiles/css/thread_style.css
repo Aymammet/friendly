@@ -1,0 +1,74 @@
+#main-column {
+	max-width: 500px;
+	margin-top: 320px;
+}
+
+.each-column {
+	background-color: white;
+	margin-bottom: 40px;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+
+
+.container {
+  width: 500px;
+  text-align: center;
+  font-weight: bold;
+
+}
+
+.input-message {
+  width: 100%;
+  border-radius: 5px;
+  border: none;
+  height: auto;
+  padding: 5px;
+  background-color: rgb(220,220,220);
+}
+
+.input-message:focus-visible {
+  width: 100%;
+  border-radius: 5px;
+  border: none;
+  height: auto;
+  padding: 5px;
+  background-color: rgb(220,220,220);
+  
+}
+
+.sender {
+  color: black; 
+  background-color: rgb(90, 178, 207); 
+  border-radius: 10px; 
+  padding: 5px; 
+  max-width: 45%;
+  min-width: 20%;
+  text-align: right;
+  word-wrap: break-word;
+  float: right;
+  margin: 2px;
+}
+
+.receiver {
+  color: black; 
+  background-color: rgb(220,220,220); 
+  border-radius: 10px; 
+  padding: 5px; 
+  max-width: 45%;
+  min-width: 20%;
+  text-align: left;
+  float: left;
+  word-wrap: break-word;
+  margin: 2px;
+
+}
+
+.message-body {
+  background-color: whitesmoke;
+  padding: 10px;
+  border-radius: 5px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  height: 500px;
+}

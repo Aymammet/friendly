@@ -1,0 +1,9 @@
+<svg width="500" height="500" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+ <!-- Created with SVG-edit - https://github.com/SVG-Edit/svgedit-->
+ <g class="layer">
+  <title>Layer 1</title>
+  <circle cx="250" cy="250" fill="#7f00ff" id="svg_1" r="245" stroke="#4c4c4c" stroke-width="5"/>
+  <circle cx="250" cy="250" fill="#4c4c4c" id="svg_2" r="150" stroke="#4c4c4c" stroke-width="5"/>
+  <text fill="#ffffff" font-family="Serif" font-size="62" font-style="normal" font-weight="bold" id="svg_4" stroke="#4c4c4c" stroke-width="0" text-anchor="middle" transform="matrix(4.74559 0 0 3.17561 -863.238 -441.225)" x="233.78255" xml:space="preserve" y="238.54189">F</text>
+ </g>
+</svg>

@@ -1,0 +1,154 @@
+
+#main-column {
+	max-width: 500px;
+	margin-top: 120px;
+}
+
+.each-column {
+	background-color: white;
+	margin-bottom: 40px;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.profile-row {
+	padding-top: 15px;
+	margin-bottom: 15px;
+}
+
+.edit-button  {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 0;
+	border-radius: 10px;
+	transition: .4s;
+    cursor: pointer;
+    border-radius: 50%;
+    text-decoration: none;
+}
+
+/* .edit-button:hover {
+    display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 0;
+	border-radius: 10px;
+	transition: .4s;
+    cursor: pointer;
+    border-radius: 50%;
+	transition: .4s;
+	background-color: rgb(230, 230, 230);
+    text-decoration: none;
+    
+} */
+
+.edit-post {
+    text-decoration: none;
+    color: #1266F1; 
+    font-size: 20px; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center;
+}
+
+
+.post-created-date {
+	color: rgb(150, 150, 150);
+}
+
+.user-likes-dislikes-comments {
+	margin-top: 15px;
+	margin-bottom: 15px;
+}
+
+.like-dislike-comment {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.comment-input {
+	padding-right: 0;
+	margin-bottom: 15px;
+}
+
+.send {
+	width: 70px;
+	margin-right:15px ;
+}
+
+.send-button {
+	border-radius: 10px; 
+	display: flex; 
+	align-items: center;
+}
+
+.input-send-comment {
+	padding: 10px;
+	height: 100%; 
+	border-radius: 10px; 
+	width: 100%; 
+	background-color: rgb(230, 230, 230); 
+	border: none;
+}
+
+
+input:focus{
+    outline: none;
+}
+
+.comments {
+	margin-top: 10px;
+	/* transition: all 1s; */
+}
+
+.comment-avatar {
+	padding-bottom: 8px;
+}
+
+.comment-owner {
+	padding-bottom: 8px;
+}
+
+.comment-date {
+	color: gray;
+	margin-left: 5px;
+}
+
+.no-comment {
+    text-align: center;
+}
+
+.post-image, .post-image-url {
+    width: 100%;
+}
+
+.black, .white, .black_two, .white_two, .like-dislike-comment div i {
+    font-size: 21px; 
+    color: #1266F1; 
+    cursor: pointer;
+}
+
+.like_count, .dislike_count {
+    font-weight: bold; 
+    display: flex; 
+    align-items: center; 
+    margin-left: 5px;
+}
+
+.like-dislike-comment div {
+    display: flex; 
+    align-items: center;
+}
+
+.number_of_coms {
+    font-weight: bold; 
+    margin-left: 5px;
+}
+
+.user_comments {
+    display: none;
+}
+
+.owner-username {
+	color: rgb(150, 150, 150);
+}

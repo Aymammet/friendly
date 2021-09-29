@@ -1,0 +1,122 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+body {
+    background-color:  #c65ddd;;
+}
+
+
+#main {
+    display: flex;
+    margin: 10px;
+    margin-top: 50px ;
+    
+  }
+
+  #main-left {
+   
+    width: 20vw;
+    border-radius: 5px;
+    margin: 3px;
+    text-align: center;
+    /* border: 1px solid black; */
+  }
+  
+  #main-center {
+    /* border: 1px solid black; */
+    width: 50vw;
+    border-radius: 5px;
+    margin: 3px;
+    /* background: url('../images/fr8.jpg') no-repeat; */
+    /* background-color: #cccccc; */
+    background-position: center;
+    background-size: cover;
+    overflow-y: hidden; 
+    overflow-x: hidden;
+  }
+
+  #photo {
+    background-color: rgb(58, 226, 43);
+    width: 60%;
+    margin: 0 auto;
+    /* margin-top: 10px; */
+    border-radius: 5px;
+    height: 200px;
+}
+.conversation {
+    padding: 5px;
+    /* display: flex; */
+    width: 100%;
+}
+.user1 {
+    display: flex;
+    width: 100%;
+    /* border: 1px solid red; */
+    padding-left: 10px ;
+    border-radius: 5px;
+    text-align: left;
+    margin-bottom: 10px;
+}
+
+.center-avatar {
+    width: 40px; 
+    height: 40px; 
+    border-radius: 20px;
+    /* margin: 10px; */
+    /* border: 1px solid black; */
+}
+
+.user1-text {
+    background-color: khaki;
+    width: 88%;
+    border-radius: 5px;
+    /* border: 1px solid black; */
+    display: flex;
+    /* justify-content: center; */
+    align-items: center;
+    align-content: center;
+
+
+}
+.user1-text-value{
+    padding-left: 10px ;
+    justify-content: left;
+    align-content: left;
+    align-items: left;
+    margin: 0;
+
+}
+
+.user2 {
+    display: flex;
+    width: 100%;
+    /* border: 1px solid red; */
+    padding-left: 10px ;
+    border-radius: 5px;
+    text-align: left;
+    margin-bottom: 10px;
+}
+
+
+.user2-text {
+    background-color: rgb(96, 219, 122);
+    width: 88%;
+    border-radius: 5px;
+    /* border: 1px solid black; */
+    display: flex;
+    /* justify-content: center; */
+    align-items: center;
+    align-content: center;
+
+
+}
+.user2-text-value{
+    padding-left: 10px ;
+    justify-content: left;
+    align-content: left;
+    align-items: left;
+    margin: 0;
+
+}
