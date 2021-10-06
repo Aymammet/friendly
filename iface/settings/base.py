@@ -129,7 +129,7 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static' )]
 
 ACCOUNT_EMAIL_REQUIRED = True
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-STATIC_ROOT = BASE_DIR / 'staticfiles'
+# STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -137,9 +137,6 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'profiles.User'
-
 LOGIN_REDIRECT_URL = 'post:home'
-
 LOGOUT_REDIRECT_URL = 'authenticate:main_page'
-
 SESSION_COOKIE_AGE = 60 * 60 * 24  # 1 day (timedelta)

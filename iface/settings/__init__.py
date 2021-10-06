@@ -7,5 +7,7 @@ from iface.settings.base import *
 # Default is local environment
 environment = os.getenv('DJANGO_SETTINGS_MODULE', 'local')
 
+
 if environment.endswith('production'):
+    print(34)
     from .production import *
